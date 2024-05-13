@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
         }));
 
         return {
-            notes, title: 'Tablón de Anuncios'
+            notes, title: 'Tablón de Anuncios', userID: cookies.get('userid')
         }
     }
 }
@@ -42,6 +42,15 @@ export const actions = {
         })
 
         return { success: true };
+    },
+    delete: async ({ request }) => {
+        const data = await request.formData()
+
+        const noteID = data.get('noteID')
+
+        await db.delete(note).where(eq(note.id, noteID))
+
+        return { success: true }
     },
     signout: async (event) => {
         if (!event.locals.session) {

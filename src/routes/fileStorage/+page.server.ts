@@ -90,6 +90,20 @@ export const actions: Actions = {
             console.log('error: ' + error);
         }
     },
+    delete: async ({ request, cookies }) => {
+        const data = await request.formData();
+
+        const fileID = data.get('fileID')
+
+        const dbFile = await db.select().from(file).where(eq(file.id, fileID))
+        const user = await db.select().from(employee).where(eq(employee.id, cookies.get('userid')));
+
+        await storage.bucket('gs://tablero-bucket').file(`${user[0].username}/${dbFile[0].name}`).delete()
+
+        await db.delete(file).where(eq(file.id, fileID));
+
+        return { success: true }
+    },
     signout: async (event) => {
         if (!event.locals.session) {
             return fail(401);

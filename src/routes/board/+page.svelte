@@ -13,8 +13,6 @@
 	import type { PageData } from '../$types'
 
 	export let data: PageData
-
-	console.log(data.notes)
 </script>
 
 <!-- npm install -g dotenv-cli -->
@@ -75,7 +73,7 @@
 	<div class="flex flex-row flex-wrap justify-start">
 		{#each data.notes as note (note)}
 			<div class="m-5 w-1/5">
-				<NoteComponent {note} />
+				<NoteComponent {note} {data}/>
 			</div>
 		{/each}
 	</div>

@@ -1,22 +1,19 @@
 <script lang="ts">
 	export let note
 	import * as Card from '$lib/components/ui/card/index.js'
+	import { Trash } from 'svelte-radix'
 
-	// console.log(note)
-
-	function departmentToColor(department) {
-		// Convert department to a unique number (e.g., hash code)
-		const hashCode = department
+	function categoryToColor(category) {
+		const hashCode = category
 			.split('')
 			.reduce((acc, char) => char.charCodeAt(0) + (acc << 6) + (acc << 16) - acc, 0)
-		// Convert the number to a hex color code
 		const color = (hashCode & 0x00ffffff).toString(16).toUpperCase()
-		// Add leading zeros if necessary
 		return '#' + '00000'.substring(0, 6 - color.length) + color
 	}
 
-	var bgColor = departmentToColor(note.category)
-	console.log(bgColor)
+	export let data
+
+	var bgColor = categoryToColor(note.category)
 </script>
 
 <!-- <div>
@@ -32,6 +29,16 @@
 		<p>{note.description}</p>
 	</Card.Content>
 	<Card.Footer>
-		<small><p>De: <i>{note.creatorName}</i></p></small>
+		<div class="flex w-full flex-row justify-between">
+			<small><p>De: <i>{note.creatorName}</i></p></small>
+			{#if note.creatorID === data.userID}
+				<form action="?/delete" method="post">
+					<input type="hidden" name="noteID" value={note.id} />
+					<button type="submit">
+						<Trash class="h-4" />
+					</button>
+				</form>
+			{/if}
+		</div>
 	</Card.Footer>
 </Card.Root>
