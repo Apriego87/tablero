@@ -2,7 +2,7 @@ FROM node:20
 
 WORKDIR /app
 
-ENV ORIGIN http://pruebastfg.antonio_priego.msierra.cloud:3000
+ENV ORIGIN http://tablero.apriego.dawmor.cloud:3000
 
 COPY package.json package-lock.json ./
 
