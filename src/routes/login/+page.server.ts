@@ -60,8 +60,6 @@ export const actions: Actions = {
 
 			cookies.set(sessionCookie.name, sessionCookie.value, {
 				path: "/",
-				secure: true,
-				httpOnly: true,
 				...sessionCookie.attributes
 			})
 

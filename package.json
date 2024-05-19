@@ -11,7 +11,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"migration:generate": "drizzle-kit generate:pg --schema=./src/lib/schema.ts",
-		"migration:push": "dotenv drizzle-kit push:pg",
+		"migration:push": "node -r dotenv/config ./node_modules/.bin/drizzle-kit push:pg",
 		"db:seed": "tsx ./src/lib/seed.ts"
 	},
 	"devDependencies": {
