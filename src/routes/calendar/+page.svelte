@@ -26,13 +26,10 @@
 	export let data
 
 	function departmentToColor(department) {
-		// Convert department to a unique number (e.g., hash code)
 		const hashCode = department
 			.split('')
 			.reduce((acc, char) => char.charCodeAt(0) + (acc << 6) + (acc << 16) - acc, 0)
-		// Convert the number to a hex color code
 		const color = (hashCode & 0x00ffffff).toString(16).toUpperCase()
-		// Add leading zeros if necessary
 		return '#' + '00000'.substring(0, 6 - color.length) + color
 	}
 
@@ -54,12 +51,11 @@
 	let options = {
 		view: 'timeGridDay',
 		events: eventos,
-		eventClick: function (info) {
-			console.log(info.event.id)
-			ec.removeEventById(info.event.id)
+		eventClick: function ({ event }) {
+			ec.removeEventById(event.id)
 
 			const formData = new URLSearchParams()
-			formData.append('eventId', info.event.id)
+			formData.append('eventId', event.id)
 
 			fetch('?/delete', {
 				method: 'POST',
@@ -68,20 +64,6 @@
 				},
 				body: formData.toString()
 			})
-				.then((response) => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok')
-					}
-					return response.json()
-				})
-				.then((data) => {
-					console.log('Response:', data)
-					// Handle response data here
-				})
-				.catch((error) => {
-					console.error('Error:', error)
-					// Handle errors here
-				})
 		}
 	}
 </script>
@@ -120,8 +102,6 @@
 							<Select.Input name="department" />
 						</Select.Root>
 					</div>
-
-					<!-- faltan las horas -->
 
 					<div class="my-3 flex flex-row justify-center gap-4">
 						<div>
