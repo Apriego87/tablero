@@ -9,7 +9,7 @@ import { auth } from "$lib/server/auth";
 
 const storage = new Storage({
     projectId: 'dulcet-glyph-422010-n8',
-    keyFilename: 'keys\\dulcet-glyph-422010-n8-619d72f660d9.json'
+    keyFilename: '/app/keys/dulcet-glyph-422010-n8-619d72f660d9.json'
 });
 
 /* async function disableUniformBucketLevelAccess() {

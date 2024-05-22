@@ -60,7 +60,8 @@ export const actions: Actions = {
 
 			cookies.set(sessionCookie.name, sessionCookie.value, {
 				path: "/",
-				...sessionCookie.attributes
+				secure: false,
+				// ...sessionCookie.attributes
 			})
 
 			cookies.set('userid', existingUser[0].id, {
