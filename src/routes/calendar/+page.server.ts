@@ -33,5 +33,14 @@ export const actions: Actions = {
                 department: data.get('department'),
             }
         )
+    },
+    delete: async ({ request }) => {
+        const data = await request.formData()
+
+        const id = data.get('eventId')
+
+        await db.delete(event).where(eq(event.id, id))
+
+        return { success: true }
     }
 }

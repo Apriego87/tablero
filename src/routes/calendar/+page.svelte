@@ -14,12 +14,14 @@
 	import { DateFormatter, type DateValue, getLocalTimeZone } from '@internationalized/date'
 	import { Calendar as CalendarIcon } from 'svelte-radix'
 
-	const df = new DateFormatter('en-US', {
+	/* const df = new DateFormatter('es-ES', {
 		dateStyle: 'long'
 	})
 
 	let inicio: DateValue | undefined = undefined
-	let fin: DateValue | undefined = undefined
+	let fin: DateValue | undefined = undefined */
+
+	let ec
 
 	export let data
 
@@ -51,7 +53,36 @@
 	let plugins = [TimeGrid, DayGrid]
 	let options = {
 		view: 'timeGridDay',
-		events: eventos
+		events: eventos,
+		eventClick: function (info) {
+			console.log(info.event.id)
+			ec.removeEventById(info.event.id)
+
+			const formData = new URLSearchParams()
+			formData.append('eventId', info.event.id)
+
+			fetch('?/delete', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: formData.toString()
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok')
+					}
+					return response.json()
+				})
+				.then((data) => {
+					console.log('Response:', data)
+					// Handle response data here
+				})
+				.catch((error) => {
+					console.error('Error:', error)
+					// Handle errors here
+				})
+		}
 	}
 </script>
 
@@ -116,6 +147,6 @@
 
 <div id="cont" class="absolute top-36 flex h-[80vh] w-screen flex-row items-center justify-center">
 	<div class="h-full w-[90vw] overflow-auto">
-		<Calendar {plugins} {options} />
+		<Calendar bind:this={ec} {plugins} {options} />
 	</div>
 </div>
