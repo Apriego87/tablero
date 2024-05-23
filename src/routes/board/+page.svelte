@@ -69,7 +69,7 @@
 </div>
 
 <div class="h-full w-full p-5">
-	<h1 class="my-5 text-center text-2xl font-bold">Anuncios actuales</h1>
+	<h1 class="my-5 text-center text-3xl font-bold">Anuncios actuales</h1>
 	<div class="flex flex-row flex-wrap justify-start">
 		{#if data.notes.length === 0}
 			<div class="w-full text-center mt-5">

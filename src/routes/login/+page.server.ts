@@ -11,8 +11,6 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 
-// Define outside the load function so the adapter can be cached
-
 const schema = z.object({
 	username: z.string().min(4).max(31).regex(new RegExp(/^[a-z0-9_]+$/), {
 		message: 'Username must only contain lowercase letters, digits, hyphens, and underscores',
@@ -23,7 +21,6 @@ const schema = z.object({
 export const load = (async () => {
 	const form = await superValidate(zod(schema));
 
-	// Always return { form } in load functions
 	return { form, title: 'Inicio de Sesión' };
 });
 
@@ -43,7 +40,7 @@ export const actions: Actions = {
 
 			if (!existingUser) {
 				return fail(400, {
-					message: "Incorrect username or password"
+					message: "Usuario o contraseña incorrectos"
 				});
 			}
 
@@ -51,7 +48,7 @@ export const actions: Actions = {
 			const validPassword = await new Argon2id().verify(existingUser[0].password, password);
 			if (!validPassword) {
 				return fail(400, {
-					message: "Incorrect username or password"
+					message: "Usuario o contraseña incorrectos"
 				});
 			}
 			console.log(existingUser[0].id)
@@ -59,9 +56,8 @@ export const actions: Actions = {
 			const sessionCookie = auth.createSessionCookie(session.id);
 
 			cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: "/",
+				path: '/',
 				secure: false,
-				// ...sessionCookie.attributes
 			})
 
 			cookies.set('userid', existingUser[0].id, {

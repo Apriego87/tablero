@@ -11,7 +11,7 @@
 	import unknown from '$lib/assets/unknown.png'
 	import type { PageData } from '../$types'
 
-	const iconMapping = {
+	const iconMapping: { [key: string]: string } = {
 		'image/jpg': image,
 		'image/jpeg': image,
 		'image/png': image,
@@ -19,7 +19,7 @@
 		'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': excel
 	}
 
-	function getIconUrl(mimeType) {
+	function getIconUrl(mimeType: string) {
 		return iconMapping[mimeType] || unknown
 	}
 
@@ -28,11 +28,11 @@
 
 <div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-start">
 	<div class="w-full p-5">
-		<h1 class="my-5 text-center text-2xl font-bold">Tus archivos:</h1>
+		<h1 class="my-5 text-center text-3xl font-bold">Tus archivos:</h1>
 
 		<div class="flex flex-row flex-wrap justify-start">
 			{#if data.files.length === 0}
-				<div class="w-full text-center mt-5">
+				<div class="mt-5 w-full text-center">
 					<p><i>No tienes archivos que mostrar...</i></p>
 				</div>
 			{:else}
@@ -62,7 +62,7 @@
 			{/if}
 		</div>
 	</div>
-	<div class="absolute bottom-10 flex w-full flex-col items-center">
+	<div class="absolute bottom-20 flex w-full flex-col items-center">
 		<form
 			action="?/upload"
 			method="post"

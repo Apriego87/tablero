@@ -4,7 +4,6 @@ WORKDIR /app
 
 ENV ORIGIN=http://tablero.apriego.dawmor.cloud:3000
 
-
 COPY package.json package-lock.json ./
 
 RUN npm ci

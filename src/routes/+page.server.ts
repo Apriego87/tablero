@@ -8,6 +8,8 @@ import type { PageServerLoad, Actions } from './$types'
 import { fail, redirect } from '@sveltejs/kit';
 import { auth } from '$lib/server/auth';
 
+
+
 export const load: PageServerLoad = async ({ cookies }) => {
     if (!cookies.get('auth_session')) {
         return redirect(302, '/login')
@@ -21,10 +23,10 @@ export const load: PageServerLoad = async ({ cookies }) => {
                 allTasks, title: 'Lista de Tareas'
             };
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error devolviendo las tareas:', error);
             return {
                 status: 404,
-                error: 'Data not found',
+                error: 'Tareas no encontradas.',
             };
         }
     }

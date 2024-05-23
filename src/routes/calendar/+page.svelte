@@ -9,23 +9,13 @@
 	import { Textarea } from '$lib/components/ui/textarea'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import * as Select from '$lib/components/ui/select'
-	import { Calendar as UICalendar } from '$lib/components/ui/calendar/index.js'
-	import * as Popover from '$lib/components/ui/popover/index.js'
-	import { DateFormatter, type DateValue, getLocalTimeZone } from '@internationalized/date'
-	import { Calendar as CalendarIcon } from 'svelte-radix'
+	import { Plus } from 'svelte-radix'
 
-	/* const df = new DateFormatter('es-ES', {
-		dateStyle: 'long'
-	})
-
-	let inicio: DateValue | undefined = undefined
-	let fin: DateValue | undefined = undefined */
-
-	let ec
+	let ec: Calendar
 
 	export let data
 
-	function departmentToColor(department) {
+	function departmentToColor(department: string) {
 		const hashCode = department
 			.split('')
 			.reduce((acc, char) => char.charCodeAt(0) + (acc << 6) + (acc << 16) - acc, 0)
@@ -33,7 +23,17 @@
 		return '#' + '00000'.substring(0, 6 - color.length) + color
 	}
 
-	let eventos = []
+	interface EventItem {
+		id: number
+		allDay: boolean
+		start: Date
+		end: Date
+		title: string
+		backgroundColor: string
+		extendedProps: { department: string }
+	}
+
+	let eventos: EventItem[] = []
 
 	data.events.forEach(function (item) {
 		eventos.push({
@@ -42,15 +42,21 @@
 			start: item.start,
 			end: item.end,
 			title: item.title,
-			backgroundColor: departmentToColor(item.department),
-			extendedProps: { department: item.department }
+			backgroundColor: departmentToColor(item.department || ''),
+			extendedProps: { department: item.department || '' }
 		})
 	})
 
 	let plugins = [TimeGrid, DayGrid]
 	let options = {
 		view: 'timeGridDay',
+		headerToolbar: {
+			start: 'prev,next today, title',
+			center: '',
+			end: 'dayGridMonth, timeGridWeek, timeGridDay'
+		},
 		events: eventos,
+		eventDurationEditable: true,
 		eventClick: function ({ event }) {
 			ec.removeEventById(event.id)
 
@@ -71,7 +77,10 @@
 <Dialog.Root>
 	<div class="mt-5 w-full text-center">
 		<Dialog.Trigger>
-			<Button>Crear Evento</Button>
+			<Button>
+				<Plus class="mr-2 h-4 w-4" />
+				Crear Evento
+			</Button>
 		</Dialog.Trigger>
 	</div>
 	<Dialog.Content class="flex h-[50vh] flex-col items-center justify-center">
@@ -106,16 +115,24 @@
 					<div class="my-3 flex flex-row justify-center gap-4">
 						<div>
 							<Label for="start">Inicio:</Label>
-							<Input type="datetime-local" id="start" name="start" />
+							<Input
+								type="datetime-local"
+								id="start"
+								name="start"
+								value={new Date().toISOString().slice(0, 16)}
+							/>
 						</div>
 						<div>
 							<Label for="end">Fin:</Label>
-							<Input type="datetime-local" id="end" name="end" />
+							<Input
+								type="datetime-local"
+								id="end"
+								name="end"
+								value={new Date(new Date().getTime() + 60 * 60 * 1000).toISOString().slice(0, 16)}
+							/>
 						</div>
 					</div>
 
-					<!-- <input hidden value={inicio} name="inicio" />
-					<input hidden value={fin} name="fin" /> -->
 					<div class="mt-2 w-full text-center">
 						<Button type="submit">Enviar</Button>
 					</div>

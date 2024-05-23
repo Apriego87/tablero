@@ -5,12 +5,11 @@
 	import * as Card from '$lib/components/ui/card'
 	import * as Select from '$lib/components/ui/select'
 
-	import SuperDebug, { superForm } from 'sveltekit-superforms'
+	import { superForm } from 'sveltekit-superforms'
 	import type { PageData } from '../$types'
-	import * as Alert from '$lib/components/ui/alert'
 	export let data: PageData
 
-	const { form, errors, allErrors, constraints, message, enhance } = superForm(data.form, {
+	const { form, errors, message, enhance } = superForm(data.form, {
 		onError({ result }) {
 			$message = result.error.message || 'error desconocido'
 		}
@@ -18,14 +17,16 @@
 </script>
 
 <main class="flex items-center justify-center">
-	<div class="w-1/2">
+	<div class="w-2/3">
 		<Card.Root>
 			<Card.Header>
-				<Card.Title class="text-center underline">Registro de Usuarios</Card.Title>
+				<Card.Title>
+					<p class="text-2xl font-bold">Regístrate</p>
+				</Card.Title>
 			</Card.Header>
 			<Card.Content>
 				<form method="POST" class="w-full" use:enhance>
-					<div class="flex flex-row text-center">
+					<div class="flex flex-row">
 						<div class="m-2 w-1/2">
 							<Label for="name">Nombre</Label>
 							<Input
@@ -40,7 +41,7 @@
 							{/if}
 						</div>
 
-						<div class="m-2 w-1/2 text-center">
+						<div class="m-2 w-1/2">
 							<Label for="surname">Apellidos</Label>
 							<Input
 								type="text"
@@ -55,7 +56,7 @@
 						</div>
 					</div>
 
-					<div class="flex flex-row text-center">
+					<div class="flex flex-row">
 						<div class="m-2 w-1/2">
 							<Label for="username">Usuario</Label>
 							<Input
@@ -70,7 +71,7 @@
 							{/if}
 						</div>
 
-						<div class="m-2 w-1/2 text-center">
+						<div class="m-2 w-1/2">
 							<Label for="email">E-Mail</Label>
 							<Input
 								type="email"
@@ -85,7 +86,7 @@
 						</div>
 					</div>
 
-					<div class="flex flex-row text-center">
+					<div class="flex flex-row">
 						<div class="m-2 w-1/2">
 							<Label for="password">Contraseña</Label>
 							<Input
@@ -100,7 +101,7 @@
 							{/if}
 						</div>
 
-						<div class="m-2 w-1/2 text-center">
+						<div class="m-2 w-1/2">
 							<Label for="confirmPassword">Confirmar contraseña</Label>
 							<Input
 								type="password"
@@ -116,10 +117,10 @@
 					</div>
 
 					<div class="flex flex-row">
-						<div class="m-2 w-1/3 text-center">
+						<div class="m-2 w-1/3">
 							<Label for="role">Rol</Label>
 							<Select.Root>
-								<Select.Trigger class="w-[200px]">
+								<Select.Trigger class="w-full">
 									<Select.Value placeholder="seleccione" />
 								</Select.Trigger>
 								<Select.Content>
@@ -134,10 +135,10 @@
 							{/if}
 						</div>
 
-						<div class="m-2 w-1/3 text-center">
+						<div class="m-2 w-1/3">
 							<Label for="department">Departamento</Label>
 							<Select.Root>
-								<Select.Trigger class="w-[200px]">
+								<Select.Trigger class="w-full">
 									<Select.Value placeholder="seleccione" />
 								</Select.Trigger>
 								<Select.Content>
@@ -152,7 +153,7 @@
 							{/if}
 						</div>
 
-						<div class="m-2 w-1/3 text-center">
+						<div class="m-2 w-1/3">
 							<Label for="location">Ubicación</Label>
 							<Input
 								type="text"
@@ -168,13 +169,13 @@
 					</div>
 
 					<div class="w-full text-center">
-						<Button class="mt-4" type="submit">Registrar</Button>
+						<Button class="mt-4 w-full" type="submit">Registrar</Button>
 					</div>
 				</form>
 			</Card.Content>
 			<Card.Footer>
 				<div class="w-full text-center">
-					<p>Ya tienes una cuenta? <a href="/login"><u>Inicia sesión</u></a></p>
+					<p>¿Ya tienes una cuenta? <a href="/login"><b>Inicia sesión</b></a></p>
 				</div>
 			</Card.Footer>
 		</Card.Root>

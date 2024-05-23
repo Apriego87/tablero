@@ -40,6 +40,7 @@ export const event = pgTable('events', {
 export const note = pgTable('notes', {
     id: serial('id').primaryKey(),
     creatorID: text('creatorID').notNull().references(() => employee.id),
+    // creatorName: text('creatorName').notNull(),
     title: varchar('title').notNull(),
     description: varchar('description'),
     category: varchar('category')
@@ -67,8 +68,11 @@ export const chat = pgTable('chats', {
 export const task = pgTable('tasks', {
     id: serial('id').primaryKey(),
     creatorID: varchar('creatorID').notNull().references(() => employee.id),
+    title: text('title').notNull(),
     description: varchar('description').notNull(),
-    checked: boolean('checked').notNull().default(false)
+    start: timestamp('start').notNull(),
+    end: timestamp('end').notNull(),
+    department: text('department').notNull()
 })
 
 export const sessionTable = pgTable("session", {

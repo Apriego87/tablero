@@ -5,10 +5,12 @@
 	import * as Accordion from '$lib/components/ui/accordion/index.js'
 	import { Separator } from '$lib/components/ui/separator'
 	import { fade } from 'svelte/transition'
-	import { AllSides } from 'svelte-radix'
+	import type { PageData } from '../routes/$types'
 
 	// COMPROBAR CORRECTO FUNCIONAMIENTO
-	export let data: { allTasks: Task[] }
+	export let data: PageData
+
+	const allTasks: Task[] = (data.allTasks ?? []) as unknown as Task[];
 
 	interface Task {
 		taskID: string
@@ -17,7 +19,7 @@
 		status: boolean
 	}
 
-	function que(item: Task) {
+	function updateChecked(item: Task) {
 		try {
 			fetch('?/update', {
 				method: 'POST',
@@ -36,18 +38,18 @@
 <div class="w-full">
 	{#if data.status !== 404}
 		<div class="mb-5 flex flex-col justify-center p-2">
-			{#if data.allTasks.every((tarea) => tarea.checked)}
+			{#if allTasks.every((tarea) => tarea.checked)}
 				<div>
 					<p><i>No hay tareas por hacer!</i></p>
 				</div>
 			{:else}
-				{#each data.allTasks as item (item.taskID)}
+				{#each allTasks as item (item.taskID)}
 					{#if !item.checked}
 						<div transition:fade class="m-2 flex items-center space-x-2">
 							<Checkbox
 								bind:checked={item.checked}
 								onCheckedChange={() => {
-									que(item)
+									updateChecked(item)
 								}}
 								id={item.taskID}
 							/>
@@ -64,14 +66,14 @@
 			<Accordion.Root class="w-full">
 				<Accordion.Item value="item-1">
 					<Accordion.Trigger>Tareas completadas</Accordion.Trigger>
-					{#each data.allTasks as item (item.taskID)}
+					{#each allTasks as item (item.taskID)}
 						{#if item.checked}
 							<Accordion.Content>
 								<div class="mx-2 flex items-center space-x-2">
 									<Checkbox
 										bind:checked={item.checked}
 										onCheckedChange={() => {
-											que(item)
+											updateChecked(item)
 										}}
 										id={item.taskID}
 									/>
@@ -83,7 +85,7 @@
 						{/if}
 					{/each}
 
-					{#if data.allTasks.some((tarea) => tarea.checked)}
+					{#if allTasks.some((tarea) => tarea.checked)}
 						<Accordion.Content>
 							<form method="POST" class="w-full" action="?/deleteChecked">
 								<Button type="submit" class="w-full" id="delButton">Borrar completadas</Button>

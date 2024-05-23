@@ -25,7 +25,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
     }
 }
 
-/** @type {import('./$types').Actions} */
 export const actions = {
     create: async ({ request, cookies }) => {
         const data = await request.formData();
