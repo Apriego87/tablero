@@ -20,7 +20,7 @@
 <div>
 	<Dialog.Root>
 		<Dialog.Trigger
-			><Button variant="default" class="absolute top-25 right-5">
+			><Button variant="default" class="top-25 absolute right-5">
 				<Plus class="mr-2 h-4 w-4" />
 				Añadir anuncio
 			</Button></Dialog.Trigger
@@ -71,10 +71,16 @@
 <div class="h-full w-full p-5">
 	<h1 class="my-5 text-center text-2xl font-bold">Anuncios actuales</h1>
 	<div class="flex flex-row flex-wrap justify-start">
-		{#each data.notes as note (note)}
-			<div class="m-5 w-1/5">
-				<NoteComponent {note} {data}/>
+		{#if data.notes.length === 0}
+			<div class="w-full text-center mt-5">
+				<p><i>No hay anuncios que mostrar...</i></p>
 			</div>
-		{/each}
+		{:else}
+			{#each data.notes as note (note)}
+				<div class="m-5 w-1/5">
+					<NoteComponent {note} {data} />
+				</div>
+			{/each}
+		{/if}
 	</div>
 </div>

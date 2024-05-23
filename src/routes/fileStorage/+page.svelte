@@ -9,6 +9,7 @@
 	import image from '$lib/assets/image.png'
 	import pdf from '$lib/assets/pdf.png'
 	import unknown from '$lib/assets/unknown.png'
+	import type { PageData } from '../$types'
 
 	const iconMapping = {
 		'image/jpg': image,
@@ -22,7 +23,7 @@
 		return iconMapping[mimeType] || unknown
 	}
 
-	export let data
+	export let data: PageData
 </script>
 
 <div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-start">
@@ -31,7 +32,7 @@
 
 		<div class="flex flex-row flex-wrap justify-start">
 			{#if data.files.length === 0}
-				<div class="w-full text-center">
+				<div class="w-full text-center mt-5">
 					<p><i>No tienes archivos que mostrar...</i></p>
 				</div>
 			{:else}

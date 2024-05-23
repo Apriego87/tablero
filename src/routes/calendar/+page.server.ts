@@ -1,8 +1,9 @@
-import { redirect, type Actions } from "@sveltejs/kit"
+import { fail, redirect, type Actions } from "@sveltejs/kit"
 import type { PageServerLoad } from "../$types"
 import { db } from "$lib"
 import { event } from "$lib/schema"
 import { eq } from "drizzle-orm"
+import { auth } from "$lib/server/auth"
 
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -42,5 +43,25 @@ export const actions: Actions = {
         await db.delete(event).where(eq(event.id, id))
 
         return { success: true }
+    },
+    signout: async (event) => {
+        if (!event.locals.session) {
+            return fail(401);
+        }
+        await auth.invalidateSession(event.locals.session.id);
+        const sessionCookie = auth.createBlankSessionCookie();
+        event.cookies.set(sessionCookie.name, sessionCookie.value, {
+            expires: new Date(0),
+            path: "/",
+            secure: false
+        });
+
+        event.cookies.set('userid', '', {
+            expires: new Date(0),
+            path: '/',
+            secure: false
+        });
+
+        return redirect(302, "/login");
     }
 }
