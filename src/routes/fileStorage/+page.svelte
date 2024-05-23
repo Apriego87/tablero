@@ -30,29 +30,35 @@
 		<h1 class="my-5 text-center text-2xl font-bold">Tus archivos:</h1>
 
 		<div class="flex flex-row flex-wrap justify-start">
-			{#each data.files as file (file.id)}
-				<form id="deleteForm{file.id}" action="?/delete" method="post">
-					<input type="hidden" name="fileID" value={file.id} />
-				</form>
-				<ContextMenu.Root>
-					<div class="w-1/6">
-						<ContextMenu.Trigger>
-							<a href={file.url} class="flex flex-col items-center justify-center px-5">
-								<img src={getIconUrl(file.mime)} alt="xls" class="w-[64px]" />
-								{file.name}
-							</a></ContextMenu.Trigger
-						>
-					</div>
-					<ContextMenu.Content>
-						<ContextMenu.Item><p>Editar</p></ContextMenu.Item>
-						<ContextMenu.Item
-							on:click={() => {
-								document.getElementById(`deleteForm${file.id}`).submit()
-							}}><p>Borrar</p></ContextMenu.Item
-						>
-					</ContextMenu.Content>
-				</ContextMenu.Root>
-			{/each}
+			{#if data.files.length === 0}
+				<div class="w-full text-center">
+					<p><i>No tienes archivos que mostrar...</i></p>
+				</div>
+			{:else}
+				{#each data.files as file (file.id)}
+					<form id="deleteForm{file.id}" action="?/delete" method="post">
+						<input type="hidden" name="fileID" value={file.id} />
+					</form>
+					<ContextMenu.Root>
+						<div class="w-1/6">
+							<ContextMenu.Trigger>
+								<a href={file.url} class="flex flex-col items-center justify-center px-5">
+									<img src={getIconUrl(file.mime)} alt="xls" class="w-[64px]" />
+									{file.name}
+								</a></ContextMenu.Trigger
+							>
+						</div>
+						<ContextMenu.Content>
+							<ContextMenu.Item><p>Editar</p></ContextMenu.Item>
+							<ContextMenu.Item
+								on:click={() => {
+									document.getElementById(`deleteForm${file.id}`).submit()
+								}}><p>Borrar</p></ContextMenu.Item
+							>
+						</ContextMenu.Content>
+					</ContextMenu.Root>
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<div class="absolute bottom-10 flex w-full flex-col items-center">
