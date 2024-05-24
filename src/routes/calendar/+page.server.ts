@@ -13,6 +13,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
     else {
         const events = await db.select().from(event).where(eq(event.creatorID, cookies.get('userid')))
 
+        console.log(events)
+
         return {
             title: 'Calendario de Eventos', events
         }
@@ -23,18 +25,32 @@ export const actions: Actions = {
     create: async ({ request, cookies }) => {
         const data = await request.formData()
 
-        console.log(data)
+        // Get the datetime-local values as strings
+        const start: FormDataEntryValue = data.get('start')
+        const end: FormDataEntryValue = data.get('end')
+
+        // Parse the strings into Date objects
+        const startDate = new Date(start)
+        const endDate = new Date(end)
+
+        // Adjust for timezone offset to get the correct local time
+        const adjustedStartDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000)
+        const adjustedEndDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000)
+
+        console.log(adjustedStartDate)
+
         await db.insert(event).values(
             {
                 creatorID: cookies.get('userid'),
                 title: data.get('title'),
                 description: data.get('description'),
-                start: new Date(String(data.get('start'))),
-                end: new Date(String(data.get('end'))),
+                start: adjustedStartDate,
+                end: adjustedEndDate,
                 department: data.get('department'),
             }
         )
-    },
+    }
+    ,
     delete: async ({ request }) => {
         const data = await request.formData()
 

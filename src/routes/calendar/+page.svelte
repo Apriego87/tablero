@@ -15,6 +15,8 @@
 
 	export let data
 
+	console.log(data.events)
+
 	function departmentToColor(department: string) {
 		const hashCode = department
 			.split('')
@@ -26,8 +28,8 @@
 	interface EventItem {
 		id: number
 		allDay: boolean
-		start: Date
-		end: Date
+		start: string
+		end: string
 		title: string
 		backgroundColor: string
 		extendedProps: { department: string }
@@ -35,12 +37,16 @@
 
 	let eventos: EventItem[] = []
 
+	function formatDateToUTCString(date: Date): string {
+        return new Date(date).toISOString().replace('T', ' ').substring(0, 19);
+    }
+
 	data.events.forEach(function (item) {
 		eventos.push({
 			id: item.id,
 			allDay: false,
-			start: item.start,
-			end: item.end,
+			start: formatDateToUTCString(item.start),
+            end: formatDateToUTCString(item.end),
 			title: item.title,
 			backgroundColor: departmentToColor(item.department || ''),
 			extendedProps: { department: item.department || '' }
@@ -58,18 +64,20 @@
 		events: eventos,
 		eventDurationEditable: true,
 		eventClick: function ({ event }) {
-			ec.removeEventById(event.id)
+			if (confirm('¿Seguro que quieres borrar el evento?')) {
+				ec.removeEventById(event.id)
 
-			const formData = new URLSearchParams()
-			formData.append('eventId', event.id)
+				const formData = new URLSearchParams()
+				formData.append('eventId', event.id)
 
-			fetch('?/delete', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				body: formData.toString()
-			})
+				fetch('?/delete', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					body: formData.toString()
+				})
+			}
 		}
 	}
 </script>
@@ -119,7 +127,9 @@
 								type="datetime-local"
 								id="start"
 								name="start"
-								value={new Date().toISOString().slice(0, 16)}
+								value={new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+									.toISOString()
+									.slice(0, 16)}
 							/>
 						</div>
 						<div>
@@ -128,7 +138,11 @@
 								type="datetime-local"
 								id="end"
 								name="end"
-								value={new Date(new Date().getTime() + 60 * 60 * 1000).toISOString().slice(0, 16)}
+								value={new Date(
+									new Date().getTime() + 60 * 60 * 1000 - new Date().getTimezoneOffset() * 60000
+								)
+									.toISOString()
+									.slice(0, 16)}
 							/>
 						</div>
 					</div>
