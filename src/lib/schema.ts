@@ -1,5 +1,5 @@
 import { serial, varchar, timestamp, pgTable, boolean, text, pgEnum } from "drizzle-orm/pg-core";
-import type { start } from "repl";
+
 
 export const roleEnum = pgEnum("role", ["jefe", "encargado", "programador"])
 
@@ -68,11 +68,8 @@ export const chat = pgTable('chats', {
 export const task = pgTable('tasks', {
     id: serial('id').primaryKey(),
     creatorID: varchar('creatorID').notNull().references(() => employee.id),
-    title: text('title').notNull(),
     description: varchar('description').notNull(),
-    start: timestamp('start').notNull(),
-    end: timestamp('end').notNull(),
-    department: text('department').notNull()
+    checked: boolean('checked').notNull().default(false)
 })
 
 export const sessionTable = pgTable("session", {

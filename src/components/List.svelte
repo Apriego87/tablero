@@ -43,7 +43,7 @@
 					<p><i>No hay tareas por hacer!</i></p>
 				</div>
 			{:else}
-				{#each allTasks as item (item.taskID)}
+				{#each allTasks as item}
 					{#if !item.checked}
 						<div transition:fade class="m-2 flex items-center space-x-2">
 							<Checkbox
@@ -66,7 +66,7 @@
 			<Accordion.Root class="w-full">
 				<Accordion.Item value="item-1">
 					<Accordion.Trigger>Tareas completadas</Accordion.Trigger>
-					{#each allTasks as item (item.taskID)}
+					{#each allTasks as item (item)}
 						{#if item.checked}
 							<Accordion.Content>
 								<div class="mx-2 flex items-center space-x-2">
