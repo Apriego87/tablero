@@ -3,6 +3,7 @@ import { employee } from "$lib/schema";
 import { fail, redirect } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
 import { auth } from "$lib/server/auth";
+import { eq } from "drizzle-orm";
 
 
 export const load: PageServerLoad = async ({ cookies }) => {
@@ -10,28 +11,43 @@ export const load: PageServerLoad = async ({ cookies }) => {
         return redirect(302, '/login')
     }
     else {
+        let manager = false
+
+        const role = await db.select({ username: employee.username, rol: employee.role }).from(employee).where(eq(employee.id, cookies.get('userid')))
+        if (role[0].rol === 'jefe' || role[0].rol === 'sysAdmin') {
+            manager = true;
+        }
+
         const users = await db.select().from(employee)
 
         return {
-            users, title: 'Área de Empleados'
+            users, title: 'Área de Empleados', manager
         }
     }
 }
 
-export const actions = {
-    signout: async (event) => {
-        if (!event.locals.session) {
+export const actions: Actions = {
+    delete: async ({ request }) => {
+        const data = await request.formData()
+        const id = data.get('userId')
+
+        await db.delete(employee).where(eq(employee.id, id))
+
+        return { success: true }
+    },
+    signout: async ({ locals, cookies }) => {
+        if (!locals.session) {
             return fail(401);
         }
-        await auth.invalidateSession(event.locals.session.id);
+        await auth.invalidateSession(locals.session.id);
         const sessionCookie = auth.createBlankSessionCookie();
-        event.cookies.set(sessionCookie.name, sessionCookie.value, {
+        cookies.set(sessionCookie.name, sessionCookie.value, {
             expires: new Date(0),
             path: "/",
             secure: false
         });
 
-        event.cookies.set('userid', '', {
+        cookies.set('userid', '', {
             expires: new Date(0),
             path: '/',
             secure: false

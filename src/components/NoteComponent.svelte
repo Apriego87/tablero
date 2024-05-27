@@ -40,7 +40,7 @@
 		const cardTitle = document.getElementById('cardTitle') as HTMLElement
 		const cardBody = document.getElementById('cardBody') as HTMLElement
 		const button = document.getElementById('makeEditable') as HTMLButtonElement
-		
+
 		if (cardTitle && cardBody && button) {
 			if (cardTitle.contentEditable === 'true' && cardBody.contentEditable === 'true') {
 				isEditing = !isEditing
@@ -104,7 +104,7 @@
 	<Card.Footer>
 		<div class="flex w-full flex-row justify-between">
 			<small><p>De: <i>{note.creatorName}</i></p></small>
-			{#if note.creatorID === data.userID}
+			{#if note.creatorID === data.userID || data.manager}
 				<form action="?/delete" method="post">
 					<input type="hidden" name="noteID" value={note.id} />
 					<button type="submit">

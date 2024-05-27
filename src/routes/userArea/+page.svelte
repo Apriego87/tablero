@@ -2,16 +2,14 @@
 	import type { PageData } from './$types'
 	import * as Avatar from '$lib/components/ui/avatar/index.js'
 	import * as HoverCard from '$lib/components/ui/hover-card/index.js'
-	import { SewingPinFilled } from 'svelte-radix'
+	import { SewingPinFilled, Trash } from 'svelte-radix'
 	import { Badge } from '$lib/components/ui/badge'
-	import { Button } from '$lib/components/ui/button'
 	import { createSearchStore, searchHandler } from '$lib/stores/search'
 	import { onDestroy } from 'svelte'
 
 	import * as Card from '$lib/components/ui/card/index.js'
 	import { Input } from '$lib/components/ui/input/index.js'
 	import { fade } from 'svelte/transition'
-	import { enhance } from '$app/forms'
 
 	export let data: PageData
 
@@ -41,6 +39,24 @@
 			...store,
 			additionalSearchTerms: store.additionalSearchTerms.filter((t) => t !== term)
 		}))
+	}
+
+	function deleteUser(userId: string) {
+		const form = document.createElement('form')
+		form.method = 'POST'
+		form.action = '?/delete' // Specify your form action URL
+
+		const idInput = document.createElement('input')
+		idInput.type = 'hidden'
+		idInput.name = 'userId'
+		idInput.value = userId
+
+		form.appendChild(idInput)
+		document.body.appendChild(form)
+		form.submit()
+
+		// Cleanup the form after submission
+		document.body.removeChild(form)
 	}
 </script>
 
@@ -83,30 +99,38 @@
 					transition:fade
 					class="flex max-h-[50vh] flex-row flex-wrap justify-between overflow-auto px-3"
 				>
-					{#each $searchStore.filtered as field}
+					{#each $searchStore.filtered as user}
 						<HoverCard.Root>
 							<div class="m-4 ml-0">
 								<HoverCard.Trigger
 									class="rounded-sm border border-gray-500 p-2 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-black"
-									>{field.name} {field.surname}</HoverCard.Trigger
-								>
+									>{user.name}
+									{user.surname}
+								</HoverCard.Trigger>
 							</div>
 							<HoverCard.Content class="w-80">
 								<div class="flex justify-around space-x-4">
 									<Avatar.Root>
-										<Avatar.Image src={field.pfp} />
-										<Avatar.Fallback>SK</Avatar.Fallback>
+										<Avatar.Image src={user.pfp} />
+										<Avatar.Fallback>FP</Avatar.Fallback>
 									</Avatar.Root>
 									<div class="space-y-1">
-										<h4 class="text-sm font-semibold">{field.name}</h4>
-										<p class="text-sm">{field.email}</p>
+										<div class="flex flex-row">
+											<h4 class="text-sm font-semibold">{user.name}</h4>
+											{#if data.manager}
+												<button on:click={() => deleteUser(user.id)}>
+													<Trash class="ml-4 h-4" />
+												</button>
+											{/if}
+										</div>
+										<p class="text-sm">{user.email}</p>
 										<div class="flex items-center pt-2">
 											<SewingPinFilled class="mr-2 h-4 w-4 opacity-70" />{' '}
-											<span class="text-muted-foreground text-xs"
+											<span class="text-xs text-muted-foreground"
 												><button
 													on:click={() => {
-														addParams(field.location)
-													}}>{field.location}</button
+														addParams(user.location)
+													}}>{user.location}</button
 												></span
 											>
 										</div>
@@ -114,8 +138,8 @@
 											<Badge
 												><button
 													on:click={() => {
-														addParams(field.role)
-													}}>{field.role}</button
+														addParams(user.role)
+													}}>{user.role}</button
 												></Badge
 											>
 										</div>

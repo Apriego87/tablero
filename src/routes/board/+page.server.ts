@@ -12,6 +12,13 @@ export const load: PageServerLoad = async ({ cookies }) => {
     else {
         const notes = await db.select().from(note)
 
+        let manager = false
+
+        const role = await db.select({ username: employee.username, rol: employee.role }).from(employee).where(eq(employee.id, cookies.get('userid')))
+        if (role[0].rol === 'jefe' || role[0].rol === 'sysAdmin') {
+            manager = true;
+        }
+
         await Promise.all(notes.map(async (item) => {
             const creator = await db.select().from(employee).where(eq(employee.id, item.creatorID));
             if (creator.length > 0) {
@@ -20,7 +27,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
         }));
 
         return {
-            notes, title: 'Tablón de Anuncios', userID: cookies.get('userid')
+            notes, title: 'Tablón de Anuncios', userID: cookies.get('userid'), manager
         }
     }
 }

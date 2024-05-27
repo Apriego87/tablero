@@ -18,7 +18,7 @@
 		<h1 class="text-2xl font-bold text-white">{$page.data.title}</h1>
 		<div class="flex flex-row">
 			{#if data.logged}
-				<div class="mr-5">
+				<div class="mr-5 flex flex-row items-center">
 					{#if data.registerRoute}
 						<Button variant="link" class="text-white" href="/register">Registrar</Button>
 					{/if}
@@ -29,7 +29,10 @@
 					<Button variant="link" class="text-white" href="/calendar">Calendario</Button>
 				</div>
 				<form method="POST" action="?/signout" use:enhance>
-					<Button variant="outline" type="submit">Cerrar sesión</Button>
+					<div class="flex flex-row items-center">
+						<p class="text-white mx-5">{data.username}</p>
+						<Button variant="outline" type="submit">Cerrar sesión</Button>
+					</div>
 				</form>
 			{/if}
 		</div>
