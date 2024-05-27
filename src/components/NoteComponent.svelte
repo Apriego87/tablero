@@ -10,7 +10,7 @@
 
 	export let note: Note
 	import * as Card from '$lib/components/ui/card/index.js'
-	import { Trash } from 'svelte-radix'
+	import { Trash, Pencil1, Check } from 'svelte-radix'
 	import type { PageData } from '../routes/$types'
 
 	function categoryToColor(category: string) {
@@ -34,22 +34,72 @@
 		return color
 	}
 
+	let isEditing = false
+
+	function makeEditable(body: Note) {
+		const cardTitle = document.getElementById('cardTitle') as HTMLElement
+		const cardBody = document.getElementById('cardBody') as HTMLElement
+		const button = document.getElementById('makeEditable') as HTMLButtonElement
+		
+		if (cardTitle && cardBody && button) {
+			if (cardTitle.contentEditable === 'true' && cardBody.contentEditable === 'true') {
+				isEditing = !isEditing
+				// Save the data
+				const updatedTitle = cardTitle.innerText
+				const updatedContent = cardBody.innerText
+				const form = document.createElement('form')
+				form.method = 'POST'
+				form.action = '?/edit'
+
+				const idInput = document.createElement('input')
+				idInput.type = 'hidden'
+				idInput.name = 'id'
+				idInput.value = body.id.toString()
+				form.appendChild(idInput)
+
+				const titleInput = document.createElement('input')
+				titleInput.type = 'hidden'
+				titleInput.name = 'title'
+				titleInput.value = updatedTitle
+				form.appendChild(titleInput)
+
+				const descriptionInput = document.createElement('input')
+				descriptionInput.type = 'hidden'
+				descriptionInput.name = 'description'
+				descriptionInput.value = updatedContent
+				form.appendChild(descriptionInput)
+
+				document.body.appendChild(form)
+				form.submit()
+
+				// Cleanup
+				document.body.removeChild(form)
+
+				// Reset contentEditable and button text
+				cardTitle.contentEditable = 'false'
+				cardBody.contentEditable = 'false'
+			} else {
+				// Make content editable
+				cardTitle.contentEditable = 'true'
+				cardBody.contentEditable = 'true'
+				isEditing = !isEditing
+			}
+		}
+	}
+
 	export let data: PageData
 
 	var bgColor: string = categoryToColor(note.category ?? '')
 </script>
 
-<!-- <div>
-	<p>{note.title}</p>
-	<p>{note.description}</p>
-</div> -->
-
 <Card.Root class="card text-center" style="background-color: {bgColor}">
 	<Card.Header>
-		<Card.Title class="text-xl font-bold">{note.title}</Card.Title>
+		<Card.Title>
+			<p id="cardTitle" class="text-xl font-bold">{note.title}</p>
+		</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<p>{note.description}</p>
+		<p id="cardBody">{note.description}</p>
 	</Card.Content>
 	<Card.Footer>
 		<div class="flex w-full flex-row justify-between">
@@ -61,6 +111,13 @@
 						<Trash class="h-4" />
 					</button>
 				</form>
+				<button id="makeEditable" on:click={() => makeEditable(note)}>
+					{#if isEditing}
+						<Check class="h-4" />
+					{:else}
+						<Pencil1 class="h-4" />
+					{/if}
+				</button>
 			{/if}
 		</div>
 	</Card.Footer>

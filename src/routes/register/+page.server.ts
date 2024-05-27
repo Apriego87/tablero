@@ -10,17 +10,18 @@ import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 import { eq } from "drizzle-orm";
+import { auth } from "$lib/server/auth";
 
 const schema = z.object({
     name: z.string(),
     surname: z.string(),
-    username: z.string().min(4).max(31).regex(new RegExp(/^[a-z0-9_]+$/), {
+    username: z.string().min(4).max(31).regex(new RegExp(/^[a-zA-Z0-9_]+$/), {
         message: 'El usuario solo puede contener letras minúsculas, números o guión bajo',
     }),
     password: z.string().min(8).max(50),
     confirmPassword: z.string().min(8).max(50),
     email: z.string().email(),
-    role: z.enum(['jefe', 'encargado', 'programador']),
+    role: z.enum(['jefe', 'encargado', 'programador', 'sysAdmin']),
     department: z.string(),
     location: z.string(),
     // pfp: z.string().optional()
@@ -34,14 +35,40 @@ const schema = z.object({
     }
 );
 
-export const load = (async () => {
+export const load = (async ({ cookies }) => {
+    const userId = cookies.get('userid')
+    if (userId) {
+        const rol = await db.select({ rol: employee.role }).from(employee).where(eq(employee.id, userId))
+        if (rol[0].rol !== 'jefe' && rol[0].rol !== 'sysAdmin') {
+            return redirect(302, '/');
+        }
+    }
+    else {
+        const data = await db.select().from(employee)
+        if (data.length !== 0) {
+            return redirect(302, '/');
+        } else {
+            await db.insert(employee).values({
+                id: generateId(15),
+                name: 'Admin',
+                surname: 'Sistemas',
+                username: 'sysAdmin',
+                password: await new Argon2id().hash('rootroot'),
+                email: 'sysadmin@gmail.com',
+                role: 'sysAdmin',
+                department: 'informatica',
+                location: 'barbastro'
+            })
+            return redirect(302, '/')
+        }
+    }
     const form = await superValidate(zod(schema));
 
     return { form, title: 'Registo de Usuarios' };
 });
 
 export const actions: Actions = {
-    default: async ({ request }) => {
+    create: async ({ request }) => {
         const form = await superValidate(request, zod(schema));
 
         if (!form.valid) {
@@ -83,5 +110,25 @@ export const actions: Actions = {
                 return redirect(302, "/login");
             }
         }
+    },
+    signout: async (event) => {
+        if (!event.locals.session) {
+            return fail(401);
+        }
+        await auth.invalidateSession(event.locals.session.id);
+        const sessionCookie = auth.createBlankSessionCookie();
+        event.cookies.set(sessionCookie.name, sessionCookie.value, {
+            expires: new Date(0),
+            path: "/",
+            secure: false
+        });
+
+        event.cookies.set('userid', '', {
+            expires: new Date(0),
+            path: '/',
+            secure: false
+        });
+
+        return redirect(302, "/login");
     }
 };

@@ -44,7 +44,13 @@
 									required
 								/>
 							</div>
-							{#if $errors.username}<span class="invalid">{$errors.username}</span>{/if}
+							{#if $errors.username}
+								<div class="w-full text-center">
+									<span class="invalid">
+										{$errors.username}
+									</span>
+								</div>
+							{/if}
 						</div>
 
 						<div class="m-2 w-full">
@@ -63,7 +69,13 @@
 								<LockClosed class="relative mx-5" />
 							</div>
 
-							{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
+							{#if $errors.password}
+								<div class="w-full text-center">
+									<span class="invalid">
+										{$errors.password}
+									</span>
+								</div>
+							{/if}
 						</div>
 					</div>
 
@@ -72,11 +84,11 @@
 					</div>
 				</form>
 			</Card.Content>
-			<Card.Footer>
+			<!-- <Card.Footer>
 				<div class="w-full text-center">
 					<p>¿Todavía no tienes una cuenta? <a href="/register"><b>Regístrate</b></a></p>
 				</div>
-			</Card.Footer>
+			</Card.Footer> -->
 		</Card.Root>
 	</div>
 </main>

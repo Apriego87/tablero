@@ -21,11 +21,11 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>
-					<p class="text-2xl font-bold">Regístrate</p>
+					<p class="text-2xl font-bold">Registrar Usuario</p>
 				</Card.Title>
 			</Card.Header>
 			<Card.Content>
-				<form method="POST" class="w-full" use:enhance>
+				<form method="POST" action="?/create" class="w-full" use:enhance>
 					<div class="flex flex-row">
 						<div class="m-2 w-1/2">
 							<Label for="name">Nombre</Label>
@@ -127,6 +127,7 @@
 									<Select.Item value="jefe">Jefe</Select.Item>
 									<Select.Item value="encargado">Encargado</Select.Item>
 									<Select.Item value="programador">Programador</Select.Item>
+									<Select.Item value="sysAdmin">Admin. Sistemas</Select.Item>
 								</Select.Content>
 								<Select.Input name="role" />
 							</Select.Root>
@@ -173,11 +174,11 @@
 					</div>
 				</form>
 			</Card.Content>
-			<Card.Footer>
+			<!-- <Card.Footer>
 				<div class="w-full text-center">
 					<p>¿Ya tienes una cuenta? <a href="/login"><b>Inicia sesión</b></a></p>
 				</div>
-			</Card.Footer>
+			</Card.Footer> -->
 		</Card.Root>
 	</div>
 </main>

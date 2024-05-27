@@ -1,7 +1,9 @@
+import { db } from "./index";
 import { serial, varchar, timestamp, pgTable, boolean, text, pgEnum } from "drizzle-orm/pg-core";
+import { Argon2id } from "oslo/password";
 
 
-export const roleEnum = pgEnum("role", ["jefe", "encargado", "programador"])
+export const roleEnum = pgEnum("role", ["jefe", "encargado", "programador", "sysAdmin"])
 
 export const userArea = pgTable("userArea", {
     id: serial("id").primaryKey(),
@@ -82,6 +84,8 @@ export const sessionTable = pgTable("session", {
         mode: "date"
     }).notNull()
 })
+
+
 
 /* export const tasks = pgTable('tasks', {
     taskID: serial('taskID').primaryKey(),

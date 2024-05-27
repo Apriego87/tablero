@@ -42,6 +42,12 @@ export const actions = {
 
         return { success: true };
     },
+    edit: async ({ request }) => {
+        const data = await request.formData()
+        await db.update(note).set({ title: data.get('title'), description: data.get('description') }).where(eq(note.id, data.get('id')))
+
+        return { success: true }
+    },
     delete: async ({ request }) => {
         const data = await request.formData()
 

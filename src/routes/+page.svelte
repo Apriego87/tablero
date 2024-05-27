@@ -2,12 +2,9 @@
 	import * as Card from '$lib/components/ui/card'
 	import AddTodo from '../components/AddTodo.svelte'
 	import List from '../components/List.svelte'
-	import { enhance } from '$app/forms'
-	import { Button } from '$lib/components/ui/button'
 	import type { PageData } from './$types'
 
 	export let data: PageData
-	console.log(data)
 </script>
 
 <main>

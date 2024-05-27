@@ -7,13 +7,13 @@ import type { Actions } from "./$types";
 import { employee } from "$lib/schema";
 import { eq } from "drizzle-orm";
 
-import { superValidate } from 'sveltekit-superforms';
+import { superValidate, setError } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 
 const schema = z.object({
-	username: z.string().min(4).max(31).regex(new RegExp(/^[a-z0-9_]+$/), {
-		message: 'Username must only contain lowercase letters, digits, hyphens, and underscores',
+	username: z.string().min(4).max(31).regex(new RegExp(/^[a-zA-Z0-9_]+$/), {
+		message: 'El usuario solo puede contener letras minúsculas, dígitos y guiones medios/bajos.'
 	}),
 	password: z.string().min(8).max(50)
 });
@@ -36,36 +36,31 @@ export const actions: Actions = {
 			const username = (form.data.username as string) || '';
 			const password = (form.data.password as string) || '';
 
-			const existingUser = await db.select().from(employee).where(eq(employee.username, username.toLowerCase()))
+			const existingUser = await db.select().from(employee).where(eq(employee.username, username))
 
-			if (!existingUser) {
-				return fail(400, {
-					message: "Usuario o contraseña incorrectos"
-				});
+			if (existingUser.length === 0) {
+				return setError(form, 'username', 'usuario incorrecto')
 			}
+			else {
+				const validPassword = await new Argon2id().verify(existingUser[0].password, password);
+				if (!validPassword) {
+					return setError(form, 'password', 'contraseña incorrecta')
+				}
+				else {
+					const session = await auth.createSession(existingUser[0].id, {});
+					const sessionCookie = auth.createSessionCookie(session.id);
 
+					cookies.set(sessionCookie.name, sessionCookie.value, {
+						path: '/',
+						secure: false,
+					})
 
-			const validPassword = await new Argon2id().verify(existingUser[0].password, password);
-			if (!validPassword) {
-				return fail(400, {
-					message: "Usuario o contraseña incorrectos"
-				});
+					cookies.set('userid', existingUser[0].id, {
+						secure: false,
+						path: '/'
+					})
+				}
 			}
-			console.log(existingUser[0].id)
-			const session = await auth.createSession(existingUser[0].id, {});
-			const sessionCookie = auth.createSessionCookie(session.id);
-
-			cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '/',
-				secure: false,
-			})
-
-			cookies.set('userid', existingUser[0].id, {
-				secure: false,
-				path: '/'
-			})
-
-
 			return redirect(302, "/");
 		}
 

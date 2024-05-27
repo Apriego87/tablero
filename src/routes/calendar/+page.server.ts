@@ -25,15 +25,12 @@ export const actions: Actions = {
     create: async ({ request, cookies }) => {
         const data = await request.formData()
 
-        // Get the datetime-local values as strings
         const start: FormDataEntryValue = data.get('start')
         const end: FormDataEntryValue = data.get('end')
 
-        // Parse the strings into Date objects
         const startDate = new Date(start)
         const endDate = new Date(end)
 
-        // Adjust for timezone offset to get the correct local time
         const adjustedStartDate = new Date(startDate.getTime() - startDate.getTimezoneOffset() * 60000)
         const adjustedEndDate = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000)
 
@@ -78,6 +75,6 @@ export const actions: Actions = {
             secure: false
         });
 
-        return redirect(302, "/login");
+        return redirect(302, '/login');
     }
 }
