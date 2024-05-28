@@ -2,8 +2,10 @@
 	import { enhance } from '$app/forms'
 	import { Button } from '$lib/components/ui/button'
 	import { Input } from '$lib/components/ui/input'
+	import { Label } from '$lib/components/ui/label/index.js'
 	import * as Card from '$lib/components/ui/card'
 	import * as ContextMenu from '$lib/components/ui/context-menu'
+	import * as Dialog from '$lib/components/ui/dialog'
 
 	import excel from '$lib/assets/excel.png'
 	import image from '$lib/assets/image.png'
@@ -19,14 +21,32 @@
 		'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': excel
 	}
 
+	let fileData: object
+	let openDialog = false
+
 	function getIconUrl(mimeType: string) {
 		return iconMapping[mimeType] || unknown
+	}
+
+	function editFile(file: object) {
+		fileData = file
+		openDialog = true
 	}
 
 	export let data: PageData
 </script>
 
 <div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-start">
+	<Dialog.Root open={openDialog}>
+		<Dialog.Content class="flex w-1/2 flex-col items-center justify-center">
+			<form method="POST" action="?/update" class="w-full">
+				<input type="hidden" name="id" value={fileData.id}>
+				<Label for="name">Nombre</Label>
+				<Input type="text" id="name" name="name" value={fileData.name} />
+				<Button type="submit">Guardar</Button>
+			</form>
+		</Dialog.Content>
+	</Dialog.Root>
 	<div class="w-full p-5">
 		<h1 class="my-5 text-center text-3xl font-bold">Tus archivos:</h1>
 
@@ -50,7 +70,11 @@
 							>
 						</div>
 						<ContextMenu.Content>
-							<ContextMenu.Item><p>Editar</p></ContextMenu.Item>
+							<ContextMenu.Item
+								on:click={() => {
+									editFile(file)
+								}}><p>Editar</p></ContextMenu.Item
+							>
 							<ContextMenu.Item
 								on:click={() => {
 									document.getElementById(`deleteForm${file.id}`).submit()

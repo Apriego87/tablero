@@ -9,7 +9,8 @@ import { auth } from "$lib/server/auth";
 
 const storage = new Storage({
     projectId: 'dulcet-glyph-422010-n8',
-    keyFilename: '/app/keys/dulcet-glyph-422010-n8-619d72f660d9.json'
+    keyFilename: 'keys\\dulcet-glyph-422010-n8-619d72f660d9.json'
+    // keyFilename: '/app/keys/dulcet-glyph-422010-n8-619d72f660d9.json'
 });
 
 /* async function disableUniformBucketLevelAccess() {
@@ -89,6 +90,14 @@ export const actions: Actions = {
         } catch (error) {
             console.log('error: ' + error);
         }
+    },
+    update: async ({ request }) => {
+        const data = await request.formData()
+
+        const name = data.get('name')
+        const id = data.get('id')
+
+        await db.update(file).set({ name: name }).where(eq(file.id, id))
     },
     delete: async ({ request, cookies }) => {
         const data = await request.formData();

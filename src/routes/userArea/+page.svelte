@@ -14,7 +14,6 @@
 	import { Button } from '$lib/components/ui/button'
 	import { Label } from '$lib/components/ui/label'
 	import { fade } from 'svelte/transition'
-	import { enhance } from '$app/forms'
 
 	export let data: PageData
 
