@@ -92,7 +92,7 @@
 	var bgColor: string = categoryToColor(note.category ?? '')
 </script>
 
-<Card.Root class="card text-center" style="background-color: {bgColor}">
+<Card.Root class="card min-w-[300px] text-center" style="background-color: {bgColor}">
 	<Card.Header>
 		<Card.Title>
 			<p id="cardTitle" class="text-xl font-bold">{note.title}</p>
@@ -105,19 +105,21 @@
 		<div class="flex w-full flex-row justify-between">
 			<small><p>De: <i>{note.creatorName}</i></p></small>
 			{#if note.creatorID === data.userID || data.manager}
-				<form action="?/delete" method="post">
-					<input type="hidden" name="noteID" value={note.id} />
-					<button type="submit">
-						<Trash class="h-4" />
+				<div class="flex flex-row">
+					<form action="?/delete" method="post" class="mx-1">
+						<input type="hidden" name="noteID" value={note.id} />
+						<button type="submit">
+							<Trash class="h-4" />
+						</button>
+					</form>
+					<button class="mx-1" id="makeEditable" on:click={() => makeEditable(note)}>
+						{#if isEditing}
+							<Check class="h-4" />
+						{:else}
+							<Pencil1 class="h-4" />
+						{/if}
 					</button>
-				</form>
-				<button id="makeEditable" on:click={() => makeEditable(note)}>
-					{#if isEditing}
-						<Check class="h-4" />
-					{:else}
-						<Pencil1 class="h-4" />
-					{/if}
-				</button>
+				</div>
 			{/if}
 		</div>
 	</Card.Footer>

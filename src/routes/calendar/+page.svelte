@@ -38,15 +38,15 @@
 	let eventos: EventItem[] = []
 
 	function formatDateToUTCString(date: Date): string {
-        return new Date(date).toISOString().replace('T', ' ').substring(0, 19);
-    }
+		return new Date(date).toISOString().replace('T', ' ').substring(0, 19)
+	}
 
 	data.events.forEach(function (item) {
 		eventos.push({
 			id: item.id,
 			allDay: false,
 			start: formatDateToUTCString(item.start),
-            end: formatDateToUTCString(item.end),
+			end: formatDateToUTCString(item.end),
 			title: item.title,
 			backgroundColor: departmentToColor(item.department || ''),
 			extendedProps: { department: item.department || '' }
@@ -91,24 +91,24 @@
 			</Button>
 		</Dialog.Trigger>
 	</div>
-	<Dialog.Content class="flex h-[50vh] flex-col items-center justify-center">
+	<Dialog.Content class="flex flex-col items-center justify-center">
 		<Dialog.Header>
 			<Dialog.Title class="text-center">Introduce los datos del evento:</Dialog.Title>
 			<Dialog.Description>
-				<form action="?/create" method="post" class="mt-2 flex flex-col">
-					<div class="my-3 grid grid-cols-4 items-center gap-4">
-						<Label for="title" class="text-right">Título</Label>
+				<form action="?/create" method="post" class="mt-2 flex w-full flex-col">
+					<div class="my-3 flex flex-col gap-2">
+						<Label for="title">Título</Label>
 						<Input id="title" name="title" class="col-span-3" />
 					</div>
-					<div class="my-3 grid grid-cols-4 items-center gap-4">
-						<Label for="description" class="text-right">Descripción</Label>
+					<div class="my-3 flex flex-col gap-2">
+						<Label for="description">Descripción</Label>
 						<Textarea id="description" name="description" class="col-span-3" />
 					</div>
 
-					<div class="my-3 grid grid-cols-4 items-center gap-4">
-						<Label for="department" class="text-right">Departamento</Label>
+					<div class="my-3 flex w-full flex-col gap-2">
+						<Label for="department">Departamento</Label>
 						<Select.Root>
-							<Select.Trigger class="w-[200px]">
+							<Select.Trigger class="w-full">
 								<Select.Value placeholder="departamento" />
 							</Select.Trigger>
 							<Select.Content>
@@ -120,9 +120,9 @@
 						</Select.Root>
 					</div>
 
-					<div class="my-3 flex flex-row justify-center gap-4">
-						<div>
-							<Label for="start">Inicio:</Label>
+					<div class="my-3 flex flex-row justify-center gap-2">
+						<div class="my-3">
+							<Label for="start">Inicio</Label>
 							<Input
 								type="datetime-local"
 								id="start"
@@ -132,8 +132,8 @@
 									.slice(0, 16)}
 							/>
 						</div>
-						<div>
-							<Label for="end">Fin:</Label>
+						<div class="my-3">
+							<Label for="end">Fin</Label>
 							<Input
 								type="datetime-local"
 								id="end"
@@ -158,6 +158,6 @@
 
 <div id="cont" class="absolute top-36 flex h-[80vh] w-screen flex-row items-center justify-center">
 	<div class="h-full w-[90vw] overflow-auto">
-		<Calendar bind:this={ec} {plugins} {options} />
+		<Calendar class="h-full" bind:this={ec} {plugins} {options} />
 	</div>
 </div>

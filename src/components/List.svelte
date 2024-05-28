@@ -1,35 +1,79 @@
 <script lang="ts">
-	import { Label } from '$lib/components/ui/label'
-	import { Checkbox } from '$lib/components/ui/checkbox'
-	import { Button } from '$lib/components/ui/button'
-	import * as Accordion from '$lib/components/ui/accordion/index.js'
-	import { Separator } from '$lib/components/ui/separator'
-	import { fade } from 'svelte/transition'
-	import type { PageData } from '../routes/$types'
+	import { Label } from '$lib/components/ui/label';
+	import { Checkbox } from '$lib/components/ui/checkbox';
+	import { Button } from '$lib/components/ui/button';
+	import * as Accordion from '$lib/components/ui/accordion/index.js';
+	import { Separator } from '$lib/components/ui/separator';
+	import { Trash, Pencil1, Check } from 'svelte-radix';
+	import { fade } from 'svelte/transition';
+	import type { PageData } from '../routes/$types';
 
-	// COMPROBAR CORRECTO FUNCIONAMIENTO
-	export let data: PageData
-
-	const allTasks: Task[] = (data.allTasks ?? []) as unknown as Task[];
+	export let data: PageData;
 
 	interface Task {
-		taskID: string
-		checked: boolean
-		description: string
-		status: boolean
+		taskID: string;
+		checked: boolean;
+		description: string;
+		status: boolean;
 	}
+
+	const allTasks: Task[] = (data.allTasks ?? []) as unknown as Task[];
 
 	function updateChecked(item: Task) {
 		try {
 			fetch('?/update', {
 				method: 'POST',
 				body: JSON.stringify(item)
-			})
+			});
 		} catch (error) {
-			console.error('Error fetching data:', error)
+			console.error('Error fetching data:', error);
 			return {
 				status: 500,
 				error: 'Internal Server Error'
+			};
+		}
+	}
+
+	function updateDescription(item: Task, newDescription: string) {
+		item.description = newDescription;
+		try {
+			fetch('?/updateDesc', {
+				method: 'POST',
+				body: JSON.stringify(item)
+			});
+		} catch (error) {
+			console.error('Error fetching data:', error);
+			return {
+				status: 500,
+				error: 'Internal Server Error'
+			};
+		}
+	}
+
+	let isEditing = {};
+
+	function makeEditable(taskID: string) {
+		const cardBody = document.getElementById(`task-${taskID}`) as HTMLElement;
+
+		if (cardBody) {
+			const isCurrentlyEditing = cardBody.contentEditable === 'true';
+			isEditing[taskID] = !isCurrentlyEditing;
+
+			if (isCurrentlyEditing) {
+				// Save the data
+				const updatedContent = cardBody.innerText;
+				const task = allTasks.find(task => task.taskID === taskID);
+
+				if (task) {
+					updateDescription(task, updatedContent);
+				}
+
+				// Reset contentEditable
+				cardBody.contentEditable = 'false';
+			} else {
+				// Make content editable
+				cardBody.contentEditable = 'true';
+				cardBody.focus();
 			}
 		}
 	}
@@ -49,13 +93,27 @@
 							<Checkbox
 								bind:checked={item.checked}
 								onCheckedChange={() => {
-									updateChecked(item)
+									updateChecked(item);
 								}}
 								id={item.taskID}
 							/>
-							<Label for={item.taskID}>
-								<p>{item.description}</p>
-							</Label>
+							<div class="flex items-center">
+								<p
+									id={`task-${item.taskID}`}
+									class="description"
+									contenteditable={isEditing[item.taskID] ? 'true' : 'false'}
+									on:input={() => {}}
+								>
+									{item.description}
+								</p>
+								<button class="ml-2" on:click={() => makeEditable(item.taskID)}>
+									{#if isEditing[item.taskID]}
+										<Check class="h-4" />
+									{:else}
+										<Pencil1 class="h-4" />
+									{/if}
+								</button>
+							</div>
 						</div>
 					{/if}
 				{/each}
@@ -73,13 +131,27 @@
 									<Checkbox
 										bind:checked={item.checked}
 										onCheckedChange={() => {
-											updateChecked(item)
+											updateChecked(item);
 										}}
 										id={item.taskID}
 									/>
-									<Label for={item.taskID}>
-										<p>{item.description}</p>
-									</Label>
+									<div class="flex items-center">
+										<p
+											id={`task-${item.taskID}`}
+											class="description"
+											contenteditable={isEditing[item.taskID] ? 'true' : 'false'}
+											on:input={() => {}}
+										>
+											{item.description}
+										</p>
+										<button class="ml-2" on:click={() => makeEditable(item.taskID)}>
+											{#if isEditing[item.taskID]}
+												<Check class="h-4" />
+											{:else}
+												<Pencil1 class="h-4" />
+											{/if}
+										</button>
+									</div>
 								</div>
 							</Accordion.Content>
 						{/if}
@@ -103,3 +175,11 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.description[contenteditable="true"] {
+		border: 1px solid #ccc;
+		padding: 2px;
+		border-radius: 4px;
+	}
+</style>

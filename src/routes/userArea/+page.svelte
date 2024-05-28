@@ -2,16 +2,36 @@
 	import type { PageData } from './$types'
 	import * as Avatar from '$lib/components/ui/avatar/index.js'
 	import * as HoverCard from '$lib/components/ui/hover-card/index.js'
-	import { SewingPinFilled, Trash } from 'svelte-radix'
+	import { SewingPinFilled, Trash, Pencil1 } from 'svelte-radix'
 	import { Badge } from '$lib/components/ui/badge'
 	import { createSearchStore, searchHandler } from '$lib/stores/search'
 	import { onDestroy } from 'svelte'
 
 	import * as Card from '$lib/components/ui/card/index.js'
 	import { Input } from '$lib/components/ui/input/index.js'
+	import * as Dialog from '$lib/components/ui/dialog'
+	import * as Select from '$lib/components/ui/select'
+	import { Button } from '$lib/components/ui/button'
+	import { Label } from '$lib/components/ui/label'
 	import { fade } from 'svelte/transition'
+	import { enhance } from '$app/forms'
 
 	export let data: PageData
+
+	interface User {
+		id: string
+		name: string
+		surname: string
+		username: string
+		email: string
+		department: string
+		location: string
+		role: string
+		pfp?: string
+	}
+
+	let userData: User
+	let openDialog = false
 
 	const searchUsers = data.users.map((user) => ({
 		...user,
@@ -58,25 +78,91 @@
 		// Cleanup the form after submission
 		document.body.removeChild(form)
 	}
+
+	function editData(user: User) {
+		userData = user
+		// selectedDepartment.value = user.department
+
+		setTimeout(() => {
+			openDialog = true
+		}, 500)
+	}
 </script>
 
-<!-- <div class="flex h-[10vh] justify-between bg-black p-5">
-	<h1 class="text-2xl font-bold text-white">Área de Empleados</h1>
-	<div class="flex flex-row">
-		<Button href="/">Lista de Tareas</Button>
-		{#if data.logged}
-			<form method="POST" action="?/signout" use:enhance>
-				<Button variant="outline" type="submit">Cerrar sesión</Button>
-			</form>
-		{:else}
-			<Button href="/login">Iniciar sesión</Button>
-			<Button href="/register">Registrarse</Button>
-		{/if}
-	</div>
-</div> -->
-
 <div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-evenly">
-	<Card.Root class="w-1/3 min-w-[768px]">
+	<Dialog.Root open={openDialog} onOutsideClick={(openDialog = false)}>
+		<Dialog.Content class="flex w-1/2 flex-col items-center justify-center">
+			<form method="POST" action="?/update" class="w-full">
+				<input type="hidden" name="userid" value={userData.id} />
+				<div class="flex flex-row">
+					<div class="m-2 w-1/2">
+						<Label for="name">Nombre</Label>
+						<Input type="text" id="name" name="name" value={userData.name} />
+					</div>
+
+					<div class="m-2 w-1/2">
+						<Label for="surname">Apellidos</Label>
+						<Input type="text" id="surname" name="surname" value={userData.surname} />
+					</div>
+				</div>
+
+				<div class="flex flex-row">
+					<div class="m-2 w-1/2">
+						<Label for="username">Usuario</Label>
+						<Input type="text" id="username" name="username" value={userData.username} />
+					</div>
+
+					<div class="m-2 w-1/2">
+						<Label for="email">E-Mail</Label>
+						<Input type="email" id="email" name="email" value={userData.email} />
+					</div>
+				</div>
+
+				<div class="flex flex-row">
+					<div class="m-2 w-1/3">
+						<Label for="role">Rol</Label>
+						<Select.Root selected={{ value: userData.role }}>
+							<Select.Trigger class="w-full">
+								<Select.Value placeholder={userData.role} />
+							</Select.Trigger>
+							<Select.Content>
+								<Select.Item value="jefe">Jefe</Select.Item>
+								<Select.Item value="encargado">Encargado</Select.Item>
+								<Select.Item value="programador">Programador</Select.Item>
+								<Select.Item value="sysAdmin">Admin. Sistemas</Select.Item>
+							</Select.Content>
+							<Select.Input name="role" />
+						</Select.Root>
+					</div>
+
+					<div class="m-2 w-1/3">
+						<Label for="department">Departamento</Label>
+						<Select.Root selected={{ value: userData.department }}>
+							<Select.Trigger class="w-full">
+								<Select.Value placeholder={userData.department} />
+							</Select.Trigger>
+							<Select.Content>
+								<Select.Item value="rrhh">RRHH</Select.Item>
+								<Select.Item value="administracion">Administración</Select.Item>
+								<Select.Item value="informatica">Informática</Select.Item>
+							</Select.Content>
+							<Select.Input name="department" />
+						</Select.Root>
+					</div>
+
+					<div class="m-2 w-1/3">
+						<Label for="location">Ubicación</Label>
+						<Input type="text" id="location" name="location" value={userData.location} />
+					</div>
+				</div>
+
+				<div class="w-full text-center">
+					<Button class="mt-4 w-full" type="submit">Guardar</Button>
+				</div>
+			</form>
+		</Dialog.Content>
+	</Dialog.Root>
+	<Card.Root class="w-1/2 min-w-[400px]">
 		<Card.Header>
 			<Card.Title>Buscador de Empleados</Card.Title>
 			<Card.Description>Puedes buscar por nombre, e-mail, ubicación o rol.</Card.Description>
@@ -121,6 +207,9 @@
 												<button on:click={() => deleteUser(user.id)}>
 													<Trash class="ml-4 h-4" />
 												</button>
+												<button on:click={() => editData(user)}>
+													<Pencil1 class="ml-4 h-4" /></button
+												>
 											{/if}
 										</div>
 										<p class="text-sm">{user.email}</p>

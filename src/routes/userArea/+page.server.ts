@@ -27,6 +27,22 @@ export const load: PageServerLoad = async ({ cookies }) => {
 }
 
 export const actions: Actions = {
+    update: async ({ request }) => {
+        const data = await request.formData()
+
+        const id = data.get('userid')
+        const name = data.get('name')
+        const surname = data.get('surname')
+        const username = data.get('username')
+        const email = data.get('email')
+        const role = data.get('role')
+        const department = data.get('department')
+        const location = data.get('location')
+
+        console.log(id)
+
+        await db.update(employee).set({ name: name, surname: surname, username: username, email: email, role: role, department: department, location: location }).where(eq(employee.id, id))
+    },
     delete: async ({ request }) => {
         const data = await request.formData()
         const id = data.get('userId')
@@ -43,7 +59,7 @@ export const actions: Actions = {
         const sessionCookie = auth.createBlankSessionCookie();
         cookies.set(sessionCookie.name, sessionCookie.value, {
             expires: new Date(0),
-            path: "/",
+            path: '/',
             secure: false
         });
 

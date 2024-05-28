@@ -18,7 +18,7 @@
 {#if $message}<h3>{$message}</h3>{/if}
 
 <main class="flex items-center justify-center">
-	<div class="w-1/3">
+	<div class="w-1/3 min-w-[500px]">
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>

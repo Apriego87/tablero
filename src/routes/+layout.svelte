@@ -4,6 +4,7 @@
 	import type { PageData } from './$types'
 	import { enhance } from '$app/forms'
 	import { Button } from '$lib/components/ui/button'
+	import { Person } from 'svelte-radix'
 
 	export let data: PageData
 </script>
@@ -14,9 +15,9 @@
 </svelte:head>
 
 <header>
-	<div class="flex h-[10vh] items-center justify-between bg-black p-5">
-		<h1 class="text-2xl font-bold text-white">{$page.data.title}</h1>
-		<div class="flex flex-row">
+	<div class="flex h-[12vh] items-center justify-between bg-black p-5 w-full">
+		<h1 class="text-2xl font-bold text-white w-[30%]">{$page.data.title}</h1>
+		<div class="flex flex-row items-center justify-end w-[70%] ">
 			{#if data.logged}
 				<div class="mr-5 flex flex-row items-center">
 					{#if data.registerRoute}
@@ -29,9 +30,12 @@
 					<Button variant="link" class="text-white" href="/calendar">Calendario</Button>
 				</div>
 				<form method="POST" action="?/signout" use:enhance>
-					<div class="flex flex-row items-center">
-						<p class="text-white mx-5">{data.username}</p>
-						<Button variant="outline" type="submit">Cerrar sesión</Button>
+					<div class="flex flex-row items-center text-white">
+						<div class="mx-4 flex flex-row items-center">
+							<Person class="h-4 mr-1" />
+							<p>{data.username}</p>
+						</div>
+						<Button class="text-black" variant="outline" type="submit">Cerrar sesión</Button>
 					</div>
 				</form>
 			{/if}

@@ -77,23 +77,31 @@ export const actions: Actions = {
             )
         )
     },
+    updateDesc: async ({ request }) => {
+        const data = await request.json()
+
+        const desc = data.description
+        const id = data.id
+
+        await db.update(task).set({ description: desc }).where(eq(task.id, id))
+    },
     deleteChecked: async ({ cookies }) => {
         const userID = cookies.get('userid') || ''
         await db.delete(task).where(and(eq(task.checked, true), eq(task.creatorID, userID)))
     },
-    signout: async (event) => {
-        if (!event.locals.session) {
+    signout: async ({ locals, cookies }) => {
+        if (!locals.session) {
             return fail(401);
         }
-        await auth.invalidateSession(event.locals.session.id);
+        await auth.invalidateSession(locals.session.id);
         const sessionCookie = auth.createBlankSessionCookie();
-        event.cookies.set(sessionCookie.name, sessionCookie.value, {
+        cookies.set(sessionCookie.name, sessionCookie.value, {
             expires: new Date(0),
             path: "/",
             secure: false
         });
 
-        event.cookies.set('userid', '', {
+        cookies.set('userid', '', {
             expires: new Date(0),
             path: '/',
             secure: false
