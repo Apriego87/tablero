@@ -48,9 +48,7 @@
 	})
 
 	function addParams(param: string) {
-		// Check if the parameter is not already in the array
 		if (!$searchStore.additionalSearchTerms.includes(param)) {
-			// Add the parameter to the array
 			$searchStore.additionalSearchTerms = [...$searchStore.additionalSearchTerms, param]
 		}
 	}
@@ -76,13 +74,11 @@
 		document.body.appendChild(form)
 		form.submit()
 
-		// Cleanup the form after submission
 		document.body.removeChild(form)
 	}
 
 	function editData(user: User) {
 		userData = user
-		// selectedDepartment.value = user.department
 
 		setTimeout(() => {
 			openDialog = true
