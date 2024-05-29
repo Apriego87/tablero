@@ -7,10 +7,11 @@ import { employee, file } from "$lib/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "$lib/server/auth";
 
+const keyFilename = process.env.NODE_ENV === 'production' ? '/app/keys/dulcet-glyph-422010-n8-619d72f660d9.json' : 'keys/dulcet-glyph-422010-n8-619d72f660d9.json';
+
 const storage = new Storage({
     projectId: 'dulcet-glyph-422010-n8',
-    keyFilename: 'keys\\dulcet-glyph-422010-n8-619d72f660d9.json'
-    // keyFilename: '/app/keys/dulcet-glyph-422010-n8-619d72f660d9.json'
+    keyFilename: keyFilename
 });
 
 /* async function disableUniformBucketLevelAccess() {

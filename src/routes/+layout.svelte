@@ -4,6 +4,7 @@
 	import type { PageData } from './$types'
 	import { enhance } from '$app/forms'
 	import { Button } from '$lib/components/ui/button'
+	import * as Avatar from '$lib/components/ui/avatar'
 	import { Person } from 'svelte-radix'
 
 	export let data: PageData
@@ -31,10 +32,13 @@
 				</div>
 				<form method="POST" action="?/signout" use:enhance>
 					<div class="flex flex-row items-center text-white">
-						<div class="mx-4 flex flex-row items-center">
-							<Person class="h-4" />
-							<Button variant="link" class="text-white" href="/profile?id={data.userId}"
-								>{data.username}</Button
+						<div class="flex flex-row items-center">
+							<Button variant="link" class="text-white" href="/profile?id={data.userId}">
+								<Avatar.Root class="mx-2 size-8 border-2 border-white">
+									<Avatar.Image src={data.pfp} />
+									<Avatar.Fallback>FP</Avatar.Fallback>
+								</Avatar.Root>
+								<p class="mx-2">{data.username}</p></Button
 							>
 						</div>
 						<Button class="text-black" variant="outline" type="submit">Cerrar sesión</Button>

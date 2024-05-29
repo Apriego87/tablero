@@ -6,13 +6,14 @@ import { fail, redirect, type Actions } from "@sveltejs/kit"
 import { auth } from "$lib/server/auth"
 import { Storage } from '@google-cloud/storage'
 import { writeFileSync } from 'fs'
-import { error } from "@sveltejs/kit"
+
+const keyFilename = process.env.NODE_ENV === 'production' ? '/app/keys/dulcet-glyph-422010-n8-619d72f660d9.json' : 'keys/dulcet-glyph-422010-n8-619d72f660d9.json';
 
 const storage = new Storage({
     projectId: 'dulcet-glyph-422010-n8',
-    keyFilename: 'keys\\dulcet-glyph-422010-n8-619d72f660d9.json'
-    // keyFilename: '/app/keys/dulcet-glyph-422010-n8-619d72f660d9.json'
+    keyFilename: keyFilename
 });
+
 
 export const load: PageServerLoad = async ({ url }) => {
     const id = url.searchParams.get('id')
