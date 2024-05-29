@@ -32,7 +32,9 @@
 	let userData: User
 	let openDialog = false
 
-	const searchUsers = data.users.map((user) => ({
+	const usersFormatted = data.users.map(({ password, ...user }) => user);
+
+	const searchUsers = usersFormatted.map((user) => ({
 		...user,
 		searchTerms: `${user.name} ${user.email} ${user.role} ${user.location}`
 	}))

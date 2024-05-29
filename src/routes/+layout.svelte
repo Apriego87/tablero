@@ -15,7 +15,7 @@
 </svelte:head>
 
 <header>
-	<div class="flex h-[12vh] w-full items-center justify-between bg-black p-5">
+	<div class="flex h-[12vh] w-full items-center justify-between bg-primary p-5">
 		<h1 class="w-[30%] text-2xl font-bold text-white">{$page.data.title}</h1>
 		<div class="flex w-[70%] flex-row items-center justify-end">
 			{#if data.logged}

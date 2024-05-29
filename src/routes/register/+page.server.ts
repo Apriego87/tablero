@@ -103,8 +103,7 @@ export const actions: Actions = {
                     email: email,
                     role: role,
                     department: department,
-                    location: location,
-                    pfp: 'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg'
+                    location: location
                 })
 
                 return redirect(303, "/login");
