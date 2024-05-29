@@ -16,7 +16,7 @@
 	})
 </script>
 
-<main class="flex items-center justify-center">
+<main class="h-[88vh] flex flex-col items-center justify-center">
 	<div class="w-2/3">
 		<Card.Root>
 			<Card.Header>
@@ -184,10 +184,6 @@
 </main>
 
 <style>
-	main {
-		height: 100vh;
-	}
-
 	.invalid {
 		color: red;
 	}

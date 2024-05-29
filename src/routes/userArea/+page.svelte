@@ -86,7 +86,7 @@
 	}
 </script>
 
-<div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-evenly">
+<div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-evenly">
 	<Dialog.Root open={openDialog} onOutsideClick={(openDialog = false)}>
 		<Dialog.Content class="flex w-1/2 flex-col items-center justify-center">
 			<form method="POST" action="?/update" class="w-full">

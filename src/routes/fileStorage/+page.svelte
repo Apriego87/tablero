@@ -44,7 +44,7 @@
 	export let data: PageData
 </script>
 
-<div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-start">
+<div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-start">
 	<Dialog.Root open={openDialog}>
 		<Dialog.Content class="flex w-1/2 flex-col items-center justify-center">
 			<form method="POST" action="?/update" class="w-full">

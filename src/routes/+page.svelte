@@ -7,7 +7,7 @@
 	export let data: PageData
 </script>
 
-<main>
+<main class="h-[88vh] flex flex-col items-center justify-center">
 	<div class="w-1/2">
 		<Card.Root>
 			<Card.Header>
@@ -27,12 +27,3 @@
 		</Card.Root>
 	</div>
 </main>
-
-<style>
-	main {
-		height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-</style>

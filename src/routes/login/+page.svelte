@@ -17,7 +17,7 @@
 
 {#if $message}<h3>{$message}</h3>{/if}
 
-<main class="flex items-center justify-center">
+<main class="h-[88vh] flex flex-col justify-center items-center">
 	<div class="w-1/3 min-w-[500px]">
 		<Card.Root>
 			<Card.Header>
@@ -94,10 +94,6 @@
 </main>
 
 <style>
-	main {
-		height: 100vh;
-	}
-
 	.invalid {
 		color: red;
 	}

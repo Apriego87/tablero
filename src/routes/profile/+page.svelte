@@ -13,7 +13,7 @@
 	const userData = data.user[0]
 </script>
 
-<div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-center">
+<div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-center">
 	<div class="flex h-[85%] w-[65%] flex-row items-center gap-10">
 		<!-- <div class="flex w-full flex-row"></div> -->
 		<Card.Root class="flex w-full flex-row">
