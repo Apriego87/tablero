@@ -13,6 +13,14 @@
 	import unknown from '$lib/assets/unknown.png'
 	import type { PageData } from '../$types'
 
+	interface File {
+		id: number,
+		creatorID: string,
+		name: string,
+		mime: string,
+		url: string
+	}
+
 	const iconMapping: { [key: string]: string } = {
 		'image/jpg': image,
 		'image/jpeg': image,
@@ -21,14 +29,14 @@
 		'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': excel
 	}
 
-	let fileData: object
+	let fileData: File
 	let openDialog = false
 
 	function getIconUrl(mimeType: string) {
 		return iconMapping[mimeType] || unknown
 	}
 
-	function editFile(file: object) {
+	function editFile(file: File) {
 		fileData = file
 		openDialog = true
 	}
@@ -40,10 +48,14 @@
 	<Dialog.Root open={openDialog}>
 		<Dialog.Content class="flex w-1/2 flex-col items-center justify-center">
 			<form method="POST" action="?/update" class="w-full">
-				<input type="hidden" name="id" value={fileData.id}>
-				<Label for="name">Nombre</Label>
-				<Input type="text" id="name" name="name" value={fileData.name} />
-				<Button type="submit">Guardar</Button>
+				<input type="hidden" name="id" value={fileData.id} />
+				<div class="m-2">
+					<Label for="name">Nombre</Label>
+					<Input type="text" id="name" name="name" value={fileData.name} />
+				</div>
+				<div class="w-full text-center m-2">
+					<Button type="submit">Guardar</Button>
+				</div>
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>

@@ -8,14 +8,14 @@ import { writable } from "svelte/store"
     added: string;
 } */
 
-export interface SearchStoreModel<T extends Record<PropertyKey, any>> {
+export interface SearchStoreModel<T extends Record<PropertyKey, string>> {
     data: T[]
     filtered: T[]
     search: string,
     additionalSearchTerms: string[]
 }
 
-export const createSearchStore = <T extends Record<PropertyKey, any>>(
+export const createSearchStore = <T extends Record<PropertyKey, string>>(
     data: T[],
 ) => {
     const { subscribe, set, update } = writable<SearchStoreModel<T>>({
@@ -32,7 +32,7 @@ export const createSearchStore = <T extends Record<PropertyKey, any>>(
     }
 }
 
-export const searchHandler = (store) => {
+export const searchHandler = <T extends Record<PropertyKey, string>>(store: SearchStoreModel<T>) => {
     const searchTerm = store.search.toLowerCase() || '';
     const additionalSearchTerms = store.additionalSearchTerms.map(term => term.toLowerCase());
 

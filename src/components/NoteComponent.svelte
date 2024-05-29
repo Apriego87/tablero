@@ -1,4 +1,8 @@
 <script lang="ts">
+	import * as Card from '$lib/components/ui/card/index.js'
+	import { Trash, Pencil1, Check } from 'svelte-radix'
+	import type { PageData } from '../routes/$types'
+
 	interface Note {
 		id: number
 		creatorID: string
@@ -9,9 +13,6 @@
 	}
 
 	export let note: Note
-	import * as Card from '$lib/components/ui/card/index.js'
-	import { Trash, Pencil1, Check } from 'svelte-radix'
-	import type { PageData } from '../routes/$types'
 
 	function categoryToColor(category: string) {
 		const hashCode: number = category
@@ -112,13 +113,15 @@
 							<Trash class="h-4" />
 						</button>
 					</form>
-					<button class="mx-1" id="makeEditable" on:click={() => makeEditable(note)}>
-						{#if isEditing}
-							<Check class="h-4" />
-						{:else}
-							<Pencil1 class="h-4" />
-						{/if}
-					</button>
+					<div class="mx-1">
+						<button id="makeEditable" on:click={() => makeEditable(note)}>
+							{#if isEditing}
+								<Check class="h-4" />
+							{:else}
+								<Pencil1 class="h-4" />
+							{/if}
+						</button>
+					</div>
 				</div>
 			{/if}
 		</div>
