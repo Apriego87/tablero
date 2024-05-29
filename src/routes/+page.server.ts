@@ -12,7 +12,7 @@ import { auth } from '$lib/server/auth';
 
 export const load: PageServerLoad = async ({ cookies }) => {
     if (!cookies.get('auth_session')) {
-        return redirect(302, '/login')
+        return redirect(303, '/login')
     }
     else {
         try {
@@ -107,6 +107,6 @@ export const actions: Actions = {
             secure: false
         });
 
-        return redirect(302, "/login");
+        return redirect(303, "/login");
     }
 }

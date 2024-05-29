@@ -38,7 +38,7 @@ makeBucketPublic().catch(console.error); */
 
 export const load: PageServerLoad = async ({ cookies }) => {
     if (!cookies.get('auth_session')) {
-        return redirect(302, '/login')
+        return redirect(303, '/login')
     }
     else {
         const files = await db.select().from(file).where(eq(file.creatorID, cookies.get('userid')))
@@ -131,6 +131,6 @@ export const actions: Actions = {
             secure: false
         });
 
-        return redirect(302, "/login");
+        return redirect(303, "/login");
     }
 }

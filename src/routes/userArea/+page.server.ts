@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 
 export const load: PageServerLoad = async ({ cookies }) => {
     if (!cookies.get('auth_session')) {
-        return redirect(302, '/login')
+        return redirect(303, '/login')
     }
     else {
         let manager = false
@@ -69,6 +69,6 @@ export const actions: Actions = {
             secure: false
         });
 
-        return redirect(302, "/login");
+        return redirect(303, "/login");
     }
 }

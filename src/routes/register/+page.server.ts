@@ -40,13 +40,13 @@ export const load = (async ({ cookies }) => {
     if (userId) {
         const rol = await db.select({ rol: employee.role }).from(employee).where(eq(employee.id, userId))
         if (rol[0].rol !== 'jefe' && rol[0].rol !== 'sysAdmin') {
-            return redirect(302, '/');
+            return redirect(303, '/');
         }
     }
     else {
         const data = await db.select().from(employee)
         if (data.length !== 0) {
-            return redirect(302, '/');
+            return redirect(303, '/');
         } else {
             await db.insert(employee).values({
                 id: generateId(15),
@@ -59,7 +59,7 @@ export const load = (async ({ cookies }) => {
                 department: 'informatica',
                 location: 'barbastro'
             })
-            return redirect(302, '/')
+            return redirect(303, '/')
         }
     }
     const form = await superValidate(zod(schema));
@@ -107,7 +107,7 @@ export const actions: Actions = {
                     pfp: 'https://i.etsystatic.com/34732889/r/il/b08942/3768265623/il_570xN.3768265623_sji1.jpg'
                 })
 
-                return redirect(302, "/login");
+                return redirect(303, "/login");
             }
         }
     },
@@ -129,6 +129,6 @@ export const actions: Actions = {
             secure: false
         });
 
-        return redirect(302, "/login");
+        return redirect(303, "/login");
     }
 };

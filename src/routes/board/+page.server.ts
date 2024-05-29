@@ -7,7 +7,7 @@ import { auth } from '$lib/server/auth.js';
 
 export const load: PageServerLoad = async ({ cookies }) => {
     if (!cookies.get('auth_session')) {
-        return redirect(302, '/login')
+        return redirect(303, '/login')
     }
     else {
         const notes = await db.select().from(note)
@@ -82,6 +82,6 @@ export const actions = {
             secure: false
         });
 
-        return redirect(302, "/login");
+        return redirect(303, "/login");
     }
 };

@@ -15,9 +15,9 @@
 </svelte:head>
 
 <header>
-	<div class="flex h-[12vh] items-center justify-between bg-black p-5 w-full">
-		<h1 class="text-2xl font-bold text-white w-[30%]">{$page.data.title}</h1>
-		<div class="flex flex-row items-center justify-end w-[70%] ">
+	<div class="flex h-[12vh] w-full items-center justify-between bg-black p-5">
+		<h1 class="w-[30%] text-2xl font-bold text-white">{$page.data.title}</h1>
+		<div class="flex w-[70%] flex-row items-center justify-end">
 			{#if data.logged}
 				<div class="mr-5 flex flex-row items-center">
 					{#if data.registerRoute}
@@ -32,8 +32,10 @@
 				<form method="POST" action="?/signout" use:enhance>
 					<div class="flex flex-row items-center text-white">
 						<div class="mx-4 flex flex-row items-center">
-							<Person class="h-4 mr-1" />
-							<p>{data.username}</p>
+							<Person class="h-4" />
+							<Button variant="link" class="text-white" href="/profile?id={data.userId}"
+								>{data.username}</Button
+							>
 						</div>
 						<Button class="text-black" variant="outline" type="submit">Cerrar sesión</Button>
 					</div>

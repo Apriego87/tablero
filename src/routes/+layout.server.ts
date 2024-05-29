@@ -8,11 +8,11 @@ import type { PageServerLoad } from "./$types"
 export const load: PageServerLoad = async ({ cookies }) => {
     let logged = false
     let registerRoute = false
-    let username
+    let username, userId
 
     if (cookies.get('auth_session')) {
         logged = true
-        const userId = cookies.get('userid')
+        userId = cookies.get('userid')
         if (userId) {
             const user = await db.select({ username: employee.username, rol: employee.role }).from(employee).where(eq(employee.id, userId))
             username = user[0].username
@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 
     return {
-        logged, registerRoute, username
+        logged, registerRoute, username, userId
     }
 }
 
