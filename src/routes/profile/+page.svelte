@@ -5,25 +5,11 @@
 	import { Button } from '$lib/components/ui/button'
 	import * as Avatar from '$lib/components/ui/avatar/index.js'
 	import * as Dialog from '$lib/components/ui/dialog'
-	import * as Alert from '$lib/components/ui/alert'
 
 	export let data
 
 	const userData = data.user[0]
-	let showSuccessAlert = false
-
-	// Check if the response code was 302
-	if (data.status === 302) {
-		showSuccessAlert = true
-	}
 </script>
-
-{#if showSuccessAlert}
-	<Alert.Root>
-		<Alert.Title>Éxito</Alert.Title>
-		<Alert.Description>Los datos se han actualizado correctamente.</Alert.Description>
-	</Alert.Root>
-{/if}
 
 <div id="cont" class="flex h-[90vh] w-full flex-col items-center justify-evenly">
 	<div class="flex h-[85%] w-[65%] flex-row gap-10">
