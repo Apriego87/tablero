@@ -1,19 +1,7 @@
-import { db } from "./index";
 import { serial, varchar, timestamp, pgTable, boolean, text, pgEnum } from "drizzle-orm/pg-core";
-import { Argon2id } from "oslo/password";
 
 
 export const roleEnum = pgEnum("role", ["jefe", "encargado", "programador", "sysAdmin"])
-
-export const userArea = pgTable("userArea", {
-    id: serial("id").primaryKey(),
-    name: varchar("name"),
-    surname: varchar("surname"),
-    email: varchar("email"),
-    role: roleEnum("role"),
-    location: varchar("location"),
-    pfp: varchar("pfp")
-});
 
 export const employee = pgTable('employees', {
     id: text("id").primaryKey(),
@@ -42,7 +30,6 @@ export const event = pgTable('events', {
 export const note = pgTable('notes', {
     id: serial('id').primaryKey(),
     creatorID: text('creatorID').notNull().references(() => employee.id),
-    // creatorName: text('creatorName').notNull(),
     title: varchar('title').notNull(),
     description: varchar('description'),
     category: varchar('category')
@@ -84,30 +71,3 @@ export const sessionTable = pgTable("session", {
         mode: "date"
     }).notNull()
 })
-
-
-
-/* export const tasks = pgTable('tasks', {
-    taskID: serial('taskID').primaryKey(),
-    userID: varchar('userID').notNull(),
-    description: varchar('description').notNull(),
-    checked: boolean('checked').default(false)
-})
-
-export const userTable = pgTable("user", {
-    id: text("id").primaryKey(),
-    name: varchar("name").notNull(),
-    username: varchar("username").notNull().unique(),
-    hashed_password: text('hashed_password').notNull()
-});
-
-export const sessionTable = pgTable("session", {
-    id: text("id").primaryKey(),
-    userId: text("user_id")
-        .notNull()
-        .references(() => userTable.id),
-    expiresAt: timestamp("expires_at", {
-        withTimezone: true,
-        mode: "date"
-    }).notNull()
-}); */

@@ -10,8 +10,6 @@
 
 	export let data: PageData
 
-	// particles.js
-
 	const { form, errors, constraints, message, enhance } = superForm(data.form, {})
 </script>
 
@@ -29,7 +27,6 @@
 				<form method="POST" use:enhance class="w-full">
 					<div class="flex flex-col items-center justify-center">
 						<div class="m-2 w-full">
-							<!-- <Label for="username">Usuario</Label> -->
 							<div class="flex flex-row items-center justify-center">
 								<Person class="relative mx-5" />
 								<Input
@@ -54,7 +51,6 @@
 						</div>
 
 						<div class="m-2 w-full">
-							<!-- <Label for="password">Contraseña</Label> -->
 							<div class="flex flex-row items-center justify-center">
 								<Input
 									type="password"
@@ -84,11 +80,6 @@
 					</div>
 				</form>
 			</Card.Content>
-			<!-- <Card.Footer>
-				<div class="w-full text-center">
-					<p>¿Todavía no tienes una cuenta? <a href="/register"><b>Regístrate</b></a></p>
-				</div>
-			</Card.Footer> -->
 		</Card.Root>
 	</div>
 </main>

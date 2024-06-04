@@ -6,7 +6,6 @@
 	import * as Avatar from '$lib/components/ui/avatar/index.js'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import * as Card from '$lib/components/ui/card'
-	import { Root } from 'postcss'
 
 	export let data
 

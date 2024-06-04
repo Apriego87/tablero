@@ -2,7 +2,7 @@ FROM node:20
 
 WORKDIR /app
 
-ENV ORIGIN=http://tablero.apriego.dawmor.cloud:3000
+ENV ORIGIN=http://tablero.apriego.dawmor.cloud
 
 COPY package.json package-lock.json ./
 
@@ -14,9 +14,9 @@ RUN npm run build
 
 RUN npm prune --production
 
-ENV PORT=3000
+ENV PORT=80
 
-EXPOSE 3000
+EXPOSE 80
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
