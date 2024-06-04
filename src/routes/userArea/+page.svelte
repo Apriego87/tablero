@@ -88,35 +88,35 @@
 
 <div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-evenly">
 	<Dialog.Root open={openDialog} onOutsideClick={(openDialog = false)}>
-		<Dialog.Content class="flex w-1/2 flex-col items-center justify-center">
+		<Dialog.Content class="flex w-full sm:w-3/4 lg:w-1/2 flex-col items-center justify-center">
 			<form method="POST" action="?/update" class="w-full">
 				<input type="hidden" name="userid" value={userData.id} />
-				<div class="flex flex-row">
-					<div class="m-2 w-1/2">
+				<div class="flex flex-col md:flex-row">
+					<div class="m-2 w-full md:w-1/2">
 						<Label for="name">Nombre</Label>
 						<Input type="text" id="name" name="name" value={userData.name} />
 					</div>
 
-					<div class="m-2 w-1/2">
+					<div class="m-2 w-full md:w-1/2">
 						<Label for="surname">Apellidos</Label>
 						<Input type="text" id="surname" name="surname" value={userData.surname} />
 					</div>
 				</div>
 
-				<div class="flex flex-row">
-					<div class="m-2 w-1/2">
+				<div class="flex flex-col md:flex-row">
+					<div class="m-2 w-full md:w-1/2">
 						<Label for="username">Usuario</Label>
 						<Input type="text" id="username" name="username" value={userData.username} />
 					</div>
 
-					<div class="m-2 w-1/2">
+					<div class="m-2 w-full md:w-1/2">
 						<Label for="email">E-Mail</Label>
 						<Input type="email" id="email" name="email" value={userData.email} />
 					</div>
 				</div>
 
-				<div class="flex flex-row">
-					<div class="m-2 w-1/3">
+				<div class="flex flex-col md:flex-row">
+					<div class="m-2 w-full md:w-1/3">
 						<Label for="role">Rol</Label>
 						<Select.Root selected={{ value: userData.role }}>
 							<Select.Trigger class="w-full">
@@ -132,7 +132,7 @@
 						</Select.Root>
 					</div>
 
-					<div class="m-2 w-1/3">
+					<div class="m-2 w-full md:w-1/3">
 						<Label for="department">Departamento</Label>
 						<Select.Root selected={{ value: userData.department }}>
 							<Select.Trigger class="w-full">
@@ -147,7 +147,7 @@
 						</Select.Root>
 					</div>
 
-					<div class="m-2 w-1/3">
+					<div class="m-2 w-full md:w-1/3">
 						<Label for="location">Ubicación</Label>
 						<Input type="text" id="location" name="location" value={userData.location} />
 					</div>
@@ -159,7 +159,7 @@
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>
-	<Card.Root class="w-1/2 min-w-[400px]">
+	<Card.Root class="w-full sm:w-3/4 lg:w-1/2 max-w-[90vw]">
 		<Card.Header>
 			<Card.Title>Buscador de Empleados</Card.Title>
 			<Card.Description>Puedes buscar por nombre, e-mail, ubicación o rol.</Card.Description>

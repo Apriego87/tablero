@@ -1,13 +1,18 @@
 <script lang="ts">
 	import '../app.pcss'
-	import { page } from '$app/stores'
+	import { page, navigating } from '$app/stores'
 	import type { PageData } from './$types'
 	import { enhance } from '$app/forms'
 	import { Button } from '$lib/components/ui/button'
+	import { HamburgerMenu, ArrowLeft } from 'svelte-radix'
 	import * as Avatar from '$lib/components/ui/avatar'
-	import { Person } from 'svelte-radix'
+	import * as Sheet from '$lib/components/ui/sheet'
+	import * as Popover from '$lib/components/ui/popover/index.js'
 
 	export let data: PageData
+
+	let open = false
+	$: if ($navigating) open = false
 </script>
 
 <svelte:head>
@@ -15,35 +20,54 @@
 	<meta name="robots" content="noindex nofollow" />
 </svelte:head>
 
-<header>
-	<div class="flex h-[12vh] w-full items-center justify-between bg-primary p-5">
-		<h1 class="w-[30%] text-2xl font-bold text-white">{$page.data.title}</h1>
-		<div class="flex w-[70%] flex-row items-center justify-end">
+<header class="bg-primary px-5">
+	<div class="flex h-[12vh] w-full flex-row items-center justify-between">
+		<h1 class="max-w-full text-2xl font-bold text-white md:max-w-[30vw]">
+			{$page.data.title}
+		</h1>
+		<div class="lg:flex">
 			{#if data.logged}
-				<div class="mr-5 flex flex-row items-center">
-					{#if data.registerRoute}
-						<Button variant="link" class="text-white" href="/register">Registrar</Button>
-					{/if}
-					<Button variant="link" class="text-white" href="/board">Anuncios</Button>
-					<Button variant="link" class="text-white" href="/">Tareas</Button>
-					<Button variant="link" class="text-white" href="/userArea">Área de Empleados</Button>
-					<Button variant="link" class="text-white" href="/fileStorage">Archivos</Button>
-					<Button variant="link" class="text-white" href="/calendar">Calendario</Button>
-				</div>
-				<form method="POST" action="?/signout" use:enhance>
-					<div class="flex flex-row items-center text-white">
-						<div class="flex flex-row items-center">
-							<Button variant="link" class="text-white" href="/profile?id={data.userId}">
-								<Avatar.Root class="mx-2 size-8 border-2 border-white">
-									<Avatar.Image src={data.pfp} />
-									<Avatar.Fallback>FP</Avatar.Fallback>
-								</Avatar.Root>
-								<p class="mx-2">{data.username}</p></Button
-							>
+				<Sheet.Root bind:open>
+					<Sheet.Trigger>
+						<button class="text-white focus:outline-none" aria-label="abrir menú">
+							<HamburgerMenu class="h-5" />
+						</button>
+					</Sheet.Trigger>
+					<Sheet.Content>
+						<div class="flex h-full w-full flex-col justify-between">
+							<div class="flex h-[80%] flex-col justify-evenly gap-8">
+								{#if data.registerRoute}
+									<Button variant="link" href="/register">Registrar</Button>
+								{/if}
+								<Button variant="link" href="/board">Anuncios</Button>
+								<Button variant="link" href="/">Tareas</Button>
+								<Button variant="link" href="/userArea">Área de Empleados</Button>
+								<Button variant="link" href="/fileStorage">Archivos</Button>
+								<Button variant="link" href="/calendar">Calendario</Button>
+							</div>
+
+							<Popover.Root>
+								<Popover.Trigger class="flex w-full items-center justify-center">
+									<div class="flex flex-row gap-4">
+										<Avatar.Root class="size-8 border-2">
+											<Avatar.Image src={data.pfp} />
+											<Avatar.Fallback>FP</Avatar.Fallback>
+										</Avatar.Root>
+										<p>{data.username}</p>
+									</div>
+								</Popover.Trigger>
+								<Popover.Content class="w-[80%]">
+									<div class="flex w-full flex-col">
+										<Button variant="link" href="/profile?id={data.userId}">Perfil</Button>
+										<form method="POST" action="?/signout" class="w-full" use:enhance>
+											<Button variant="link" class="w-full" type="submit">Cerrar sesión</Button>
+										</form>
+									</div>
+								</Popover.Content>
+							</Popover.Root>
 						</div>
-						<Button class="text-black" variant="outline" type="submit">Cerrar sesión</Button>
-					</div>
-				</form>
+					</Sheet.Content>
+				</Sheet.Root>
 			{/if}
 		</div>
 	</div>

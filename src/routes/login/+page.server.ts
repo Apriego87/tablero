@@ -18,8 +18,12 @@ const schema = z.object({
 	password: z.string().min(8).max(50)
 });
 
-export const load = (async () => {
+export const load = (async ({ cookies }) => {
 	const form = await superValidate(zod(schema));
+
+	if (cookies.get('auth_session')) {
+		return redirect(302, '/')
+	}
 
 	return { form, title: 'Inicio de Sesión' };
 });

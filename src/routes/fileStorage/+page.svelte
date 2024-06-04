@@ -6,6 +6,8 @@
 	import * as Card from '$lib/components/ui/card'
 	import * as ContextMenu from '$lib/components/ui/context-menu'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import * as Drawer from '$lib/components/ui/drawer/index.js'
+	import { Plus } from 'svelte-radix'
 
 	import excel from '$lib/assets/excel.png'
 	import image from '$lib/assets/image.png'
@@ -14,10 +16,10 @@
 	import type { PageData } from '../$types'
 
 	interface File {
-		id: number,
-		creatorID: string,
-		name: string,
-		mime: string,
+		id: number
+		creatorID: string
+		name: string
+		mime: string
 		url: string
 	}
 
@@ -53,7 +55,7 @@
 					<Label for="name">Nombre</Label>
 					<Input type="text" id="name" name="name" value={fileData.name} />
 				</div>
-				<div class="w-full text-center m-2">
+				<div class="m-2 w-full text-center">
 					<Button type="submit">Guardar</Button>
 				</div>
 			</form>
@@ -62,7 +64,7 @@
 	<div class="w-full p-5">
 		<h1 class="my-5 text-center text-3xl font-bold">Tus archivos:</h1>
 
-		<div class="flex flex-row flex-wrap justify-start">
+		<div class="flex flex-col flex-wrap justify-center lg:flex-row lg:justify-start">
 			{#if data.files.length === 0}
 				<div class="mt-5 w-full text-center">
 					<p><i>No tienes archivos que mostrar...</i></p>
@@ -73,10 +75,10 @@
 						<input type="hidden" name="fileID" value={file.id} />
 					</form>
 					<ContextMenu.Root>
-						<div class="w-1/6">
+						<div class="sm:w-1/2 md:w-1/2 lg:w-1/6">
 							<ContextMenu.Trigger>
-								<a href={file.url} class="flex flex-col items-center justify-center px-5">
-									<img src={getIconUrl(file.mime)} alt="xls" class="w-[64px]" />
+								<a href={file.url} class="flex flex-col items-center justify-center py-5 lg:px-5">
+									<img src={getIconUrl(file.mime)} alt="file" class="w-[64px]" />
 									{file.name}
 								</a></ContextMenu.Trigger
 							>
@@ -98,25 +100,36 @@
 			{/if}
 		</div>
 	</div>
-	<div class="absolute bottom-20 flex w-full flex-col items-center">
-		<form
-			action="?/upload"
-			method="post"
-			use:enhance
-			enctype="multipart/form-data"
-			class="mt-5 w-1/3"
+	<Drawer.Root>
+		<Drawer.Trigger>
+			<div class="absolute bottom-5 right-5">
+				<Button variant="default" class="size-16 rounded-full">
+					<Plus class="size-4" />
+				</Button>
+			</div></Drawer.Trigger
 		>
-			<Card.Root class="flex flex-col items-center justify-center">
-				<Card.Header>
-					<Card.Title><label for="file">Sube aquí tu archivo: </label></Card.Title>
-				</Card.Header>
-				<Card.Content class="flex-column flex w-full flex-wrap items-center justify-center">
-					<Input type="file" id="file" name="fileToUpload" class="text-center" required />
-				</Card.Content>
-				<Card.Footer>
-					<Button type="submit">Enviar</Button>
-				</Card.Footer>
-			</Card.Root>
-		</form>
-	</div>
+		<Drawer.Content class="h-1/2 lg:h-1/3 ">
+			<div class="flex h-full w-full flex-col items-center justify-center">
+				<form
+					action="?/upload"
+					method="post"
+					use:enhance
+					enctype="multipart/form-data"
+					class="mt-5 max-w-[90vw] lg:w-1/3"
+				>
+					<Card.Root class="flex flex-col items-center justify-center">
+						<Card.Header>
+							<Card.Title><label for="file">Sube aquí tu archivo: </label></Card.Title>
+						</Card.Header>
+						<Card.Content class="flex-column flex w-full flex-wrap items-center justify-center">
+							<Input type="file" id="file" name="fileToUpload" class="text-center" required />
+						</Card.Content>
+						<Card.Footer>
+							<Button type="submit">Enviar</Button>
+						</Card.Footer>
+					</Card.Root>
+				</form>
+			</div>
+		</Drawer.Content>
+	</Drawer.Root>
 </div>

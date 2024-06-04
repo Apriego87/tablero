@@ -14,21 +14,20 @@
 </script>
 
 <div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-center">
-	<div class="flex h-[85%] w-[65%] flex-row items-center gap-10">
-		<!-- <div class="flex w-full flex-row"></div> -->
-		<Card.Root class="flex w-full flex-row">
-			<Card.Header class="w-2/5">
-				<div class="m-5 flex h-fit w-full flex-col items-center">
+	<div class="flex h-[85%] w-[90%] lg:w-[65%] flex-row items-center gap-10">
+		<Card.Root class="flex w-full h-full lg:h-fit flex-col lg:flex-row items-center lg:items-start pb-5 lg:pb-0">
+			<Card.Header class="w-2/5 flex flex-col items-center lg:h-full">
+				<div class="lg:m-5 flex h-fit w-full flex-col items-center">
 					<Dialog.Root>
 						<Dialog.Trigger>
 							<Avatar.Root
-								class="size-64 rounded-full opacity-80 hover:opacity-100 hover:shadow-lg"
+								class="size-32 lg:size-64 rounded-full opacity-80 hover:opacity-100 hover:shadow-lg"
 							>
 								<Avatar.Image src={userData.pfp} />
 								<Avatar.Fallback>FP</Avatar.Fallback>
 							</Avatar.Root>
 						</Dialog.Trigger>
-						<Dialog.Content class="sm:max-w-[425px]">
+						<Dialog.Content class="w-[90%] lg:w-1/3">
 							<form action="?/pfp" method="POST" enctype="multipart/form-data">
 								<div class="m-2">
 									<Label for="pfpEdit">Sube una imagen aquí:</Label>
@@ -42,9 +41,9 @@
 					</Dialog.Root>
 				</div>
 			</Card.Header>
-			<Card.Content class="w-3/5">
-				<div class="m-5 h-fit">
-					<form method="POST" action="?/data" class="w-full">
+			<Card.Content class="w-full h-full lg:h-fit lg:w-3/5 overflow-auto">
+				<div class="lg:m-5 h-full lg:h-fit">
+					<form method="POST" action="?/data" class="w-full overflow-auto flex flex-col justify-evenly">
 						<input type="hidden" name="userid" value={userData.id} />
 						<div class="flex w-full flex-col">
 							<div class="m-1">

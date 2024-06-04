@@ -7,8 +7,8 @@
 	export let data: PageData
 </script>
 
-<main class="h-[88vh] flex flex-col items-center justify-center">
-	<div class="w-1/2">
+<main class="h-[88vh] flex flex-col items-center justify-center px-4">
+	<div class="w-full sm:w-2/3 md:w-1/2 lg:1/2">
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>Lista de Tareas</Card.Title>

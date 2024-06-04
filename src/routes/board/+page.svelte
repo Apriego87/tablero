@@ -21,13 +21,14 @@
 
 <div>
 	<Dialog.Root>
-		<Dialog.Trigger
-			><Button variant="default" class="top-25 absolute right-5">
-				<Plus class="mr-2 h-4 w-4" />
-				Añadir anuncio
-			</Button></Dialog.Trigger
+		<Dialog.Trigger>
+			<div class="absolute bottom-5 right-5">
+				<Button variant="default" class="size-16 rounded-full">
+					<Plus class="size-4" />
+				</Button>
+			</div></Dialog.Trigger
 		>
-		<Dialog.Content class="sm:max-w-[425px]">
+		<Dialog.Content class="w-[80%]">
 			<Dialog.Header>
 				<Dialog.Title>
 					<p>Añade un anuncio</p>
@@ -38,18 +39,18 @@
 			</Dialog.Header>
 			<form method="POST" action="?/create">
 				<div class="grid gap-4 py-4">
-					<div class="grid grid-cols-4 items-center gap-4">
-						<Label for="title" class="text-right">Título</Label>
-						<Input id="title" name="title" class="col-span-3" />
+					<div class="grid grid-cols-1 gap-4">
+						<Label for="title">Título</Label>
+						<Input id="title" name="title" />
 					</div>
-					<div class="grid grid-cols-4 items-center gap-4">
-						<Label for="description" class="text-right">Descripción</Label>
-						<Textarea id="description" name="description" class="col-span-3" />
+					<div class="grid grid-cols-1 gap-4">
+						<Label for="description">Descripción</Label>
+						<Textarea id="description" name="description" />
 					</div>
-					<div class="grid grid-cols-4 items-center gap-4">
-						<Label for="category" class="text-right">Categoría</Label>
+					<div class="grid grid-cols-1 gap-4">
+						<Label for="category">Categoría</Label>
 						<Select.Root>
-							<Select.Trigger class="w-[200px]">
+							<Select.Trigger class="w-full">
 								<Select.Value placeholder="categoría" />
 							</Select.Trigger>
 							<Select.Content>
@@ -63,7 +64,7 @@
 				</div>
 
 				<Dialog.Footer>
-					<Button type="submit">Guardar</Button>
+					<Button type="submit" class="w-full">Guardar</Button>
 				</Dialog.Footer>
 			</form>
 		</Dialog.Content>
@@ -74,7 +75,7 @@
 	<h1 class="my-5 text-center text-3xl font-bold">Anuncios actuales</h1>
 	<div class="flex flex-row flex-wrap justify-start">
 		{#if data.notes.length === 0}
-			<div class="w-full text-center mt-5">
+			<div class="mt-5 w-full text-center">
 				<p><i>No hay anuncios que mostrar...</i></p>
 			</div>
 		{:else}
