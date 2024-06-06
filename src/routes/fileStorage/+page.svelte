@@ -48,7 +48,7 @@
 
 <div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-start">
 	<Dialog.Root open={openDialog}>
-		<Dialog.Content class="flex w-1/2 flex-col items-center justify-center">
+		<Dialog.Content class="flex w-[90vw] flex-col items-center justify-center lg:w-1/2">
 			<form method="POST" action="?/update" class="w-full">
 				<input type="hidden" name="id" value={fileData.id} />
 				<div class="m-2">
@@ -64,9 +64,7 @@
 	<div class="h-full w-full p-5">
 		<h1 class="h-[10%] text-center text-3xl font-bold">Tus archivos:</h1>
 
-		<div
-			class="flex h-[90%] flex-col flex-wrap justify-center overflow-auto lg:flex-row lg:justify-start"
-		>
+		<div class="flex h-[90%] flex-col items-center overflow-auto lg:flex-row lg:justify-start">
 			{#if data.files.length === 0}
 				<div class="mt-5 w-full text-center">
 					<p><i>No tienes archivos que mostrar...</i></p>
@@ -77,7 +75,7 @@
 						<input type="hidden" name="fileID" value={file.id} />
 					</form>
 					<ContextMenu.Root>
-						<div class="sm:w-1/2 md:w-1/2 lg:w-1/6">
+						<div class="w-full lg:w-1/6">
 							<ContextMenu.Trigger>
 								<a
 									href={file.url}
@@ -105,7 +103,7 @@
 			{/if}
 		</div>
 	</div>
-	<Drawer.Root>
+	<Drawer.Root onOutsideClick={(openDialog = false)}>
 		<Drawer.Trigger>
 			<div class="absolute bottom-5 right-5">
 				<Button variant="default" class="size-16 rounded-full">
@@ -118,7 +116,6 @@
 				<form
 					action="?/upload"
 					method="post"
-					use:enhance
 					enctype="multipart/form-data"
 					class="mt-5 max-w-[90vw] lg:w-1/3"
 				>
