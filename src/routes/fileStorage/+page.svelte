@@ -61,10 +61,12 @@
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>
-	<div class="w-full p-5">
-		<h1 class="my-5 text-center text-3xl font-bold">Tus archivos:</h1>
+	<div class="h-full w-full p-5">
+		<h1 class="h-[10%] text-center text-3xl font-bold">Tus archivos:</h1>
 
-		<div class="flex flex-col flex-wrap justify-center lg:flex-row lg:justify-start">
+		<div
+			class="flex h-[90%] flex-col flex-wrap justify-center overflow-auto lg:flex-row lg:justify-start"
+		>
 			{#if data.files.length === 0}
 				<div class="mt-5 w-full text-center">
 					<p><i>No tienes archivos que mostrar...</i></p>
@@ -77,9 +79,12 @@
 					<ContextMenu.Root>
 						<div class="sm:w-1/2 md:w-1/2 lg:w-1/6">
 							<ContextMenu.Trigger>
-								<a href={file.url} class="flex flex-col text-center items-center justify-center py-5 lg:px-5">
-									<img src={getIconUrl(file.mime)} alt="file" class="w-[64px] " />
-									{file.name}
+								<a
+									href={file.url}
+									class="flex flex-col items-center justify-center py-5 text-center lg:px-5"
+								>
+									<img src={getIconUrl(file.mime)} alt="file" class="w-[64px]" />
+									<p class="w-full break-words">{file.name}</p>
 								</a></ContextMenu.Trigger
 							>
 						</div>
