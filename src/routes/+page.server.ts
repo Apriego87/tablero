@@ -57,8 +57,6 @@ export const actions: Actions = {
     update: async ({ request, cookies }) => {
         const data = await request.json()
 
-        console.log(data)
-
         const newTask = data
 
         const userID = cookies.get('userid');

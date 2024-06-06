@@ -13,8 +13,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
     else {
         const events = await db.select().from(event).where(eq(event.creatorID, cookies.get('userid')))
 
-        console.log(events)
-
         return {
             title: 'Calendario de Eventos', events
         }

@@ -39,8 +39,6 @@ export const actions: Actions = {
         const department = data.get('department')
         const location = data.get('location')
 
-        console.log(id)
-
         await db.update(employee).set({ name: name, surname: surname, username: username, email: email, role: role, department: department, location: location }).where(eq(employee.id, id))
     },
     delete: async ({ request }) => {

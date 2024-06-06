@@ -8,14 +8,14 @@
 	import { Label } from '$lib/components/ui/label'
 	import { Textarea } from '$lib/components/ui/textarea'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import * as ContextMenu from '$lib/components/ui/context-menu'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js'
 	import * as Select from '$lib/components/ui/select'
 	import { Plus } from 'svelte-radix'
 
 	let ec: Calendar
 
 	export let data
-
-	console.log(data.events)
 
 	function departmentToColor(department: string) {
 		const hashCode = department
@@ -32,13 +32,34 @@
 		end: string
 		title: string
 		backgroundColor: string
-		extendedProps: { department: string }
+		extendedProps: { department: string; description: string }
 	}
 
 	let eventos: EventItem[] = []
+	let openDialog = false
+	let currentEvent: EventItem
 
 	function formatDateToUTCString(date: Date): string {
 		return new Date(date).toISOString().replace('T', ' ').substring(0, 19)
+	}
+
+	function deleteEvent(id) {
+		if (confirm('¿Seguro que quieres borrar el evento?')) {
+			ec.removeEventById(id)
+
+			const formData = new URLSearchParams()
+			formData.append('eventId', id)
+
+			fetch('?/delete', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: formData.toString()
+			})
+		}
+
+		openDialog = false
 	}
 
 	data.events.forEach(function (item) {
@@ -49,13 +70,13 @@
 			end: formatDateToUTCString(item.end),
 			title: item.title,
 			backgroundColor: departmentToColor(item.department || ''),
-			extendedProps: { department: item.department || '' }
+			extendedProps: { department: item.department || '', description: item.description || '' }
 		})
 	})
 
 	let plugins = [TimeGrid, DayGrid]
 	let options = {
-		view: 'timeGridDay',
+		view: 'dayGridMonth',
 		headerToolbar: {
 			start: 'prev,next today, title',
 			center: '',
@@ -64,23 +85,30 @@
 		events: eventos,
 		eventDurationEditable: true,
 		eventClick: function ({ event }) {
-			if (confirm('¿Seguro que quieres borrar el evento?')) {
-				ec.removeEventById(event.id)
-
-				const formData = new URLSearchParams()
-				formData.append('eventId', event.id)
-
-				fetch('?/delete', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded'
-					},
-					body: formData.toString()
-				})
-			}
+			openDialog = true
+			currentEvent = ec.getEventById(event.id)
 		}
 	}
 </script>
+
+<AlertDialog.Root open={openDialog} onOutsideClick={(openDialog = false)}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{currentEvent.title}</AlertDialog.Title>
+			<AlertDialog.Description>
+				{currentEvent.extendedProps.description}
+			</AlertDialog.Description>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>Cancelar</AlertDialog.Cancel>
+			<AlertDialog.Action
+				on:click={() => {
+					deleteEvent(currentEvent.id)
+				}}>Borrar</AlertDialog.Action
+			>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
 
 <Dialog.Root>
 	<div class="mt-5 w-full text-center">
@@ -158,6 +186,6 @@
 
 <div id="cont" class="absolute top-36 flex h-[80vh] w-screen flex-row items-center justify-center">
 	<div class="h-full w-[90vw] overflow-auto">
-		<Calendar class="h-full" bind:this={ec} {plugins} {options} />
+		<Calendar bind:this={ec} {plugins} {options} />
 	</div>
 </div>

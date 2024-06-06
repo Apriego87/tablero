@@ -13,8 +13,6 @@
 	import type { PageData } from '../$types'
 
 	export let data: PageData
-
-	console.log(data)
 </script>
 
 <!-- npm install -g dotenv-cli -->
@@ -23,7 +21,7 @@
 	<div class="h-full w-full p-5">
 		<h1 class="my-5 text-center text-3xl font-bold">Anuncios actuales</h1>
 		<div
-			class="flex h-[90%] flex-col items-center overflow-auto lg:flex-row lg:items-start lg:justify-start"
+			class="flex h-[90%] flex-col items-center overflow-auto lg:flex-row lg:items-start lg:justify-between lg:flex-wrap"
 		>
 			{#if data.notes.length === 0}
 				<div class="mt-5 w-full text-center">

@@ -10,17 +10,21 @@
 	export let data
 
 	const userData = data.user[0]
+
+	const disabled = !['jefe', 'sysAdmin'].includes(userData.role)
 </script>
 
 <div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-center">
-	<div class="flex h-[85%] w-[90%] lg:w-[65%] flex-row items-center gap-10">
-		<Card.Root class="flex w-full h-full lg:h-fit flex-col lg:flex-row items-center lg:items-start pb-5 lg:pb-0">
-			<Card.Header class="w-2/5 flex flex-col items-center lg:h-full">
-				<div class="lg:m-5 flex h-fit w-full flex-col items-center">
+	<div class="flex h-[85%] w-[90%] flex-row items-center gap-10 lg:w-[65%]">
+		<Card.Root
+			class="flex h-full w-full flex-col items-center pb-5 lg:h-fit lg:flex-row lg:items-start lg:pb-0"
+		>
+			<Card.Header class="flex w-2/5 flex-col items-center lg:h-full">
+				<div class="flex h-fit w-full flex-col items-center lg:m-5">
 					<Dialog.Root>
 						<Dialog.Trigger>
 							<Avatar.Root
-								class="size-32 lg:size-64 rounded-full opacity-80 hover:opacity-100 hover:shadow-lg"
+								class="size-32 rounded-full opacity-80 hover:opacity-100 hover:shadow-lg lg:size-64"
 							>
 								<Avatar.Image src={userData.pfp} />
 								<Avatar.Fallback>FP</Avatar.Fallback>
@@ -40,9 +44,13 @@
 					</Dialog.Root>
 				</div>
 			</Card.Header>
-			<Card.Content class="w-full h-full lg:h-fit lg:w-3/5 overflow-auto">
-				<div class="lg:m-5 h-full lg:h-fit">
-					<form method="POST" action="?/data" class="w-full overflow-auto flex flex-col justify-evenly">
+			<Card.Content class="h-full w-full overflow-auto lg:h-fit lg:w-3/5">
+				<div class="h-full lg:m-5 lg:h-fit">
+					<form
+						method="POST"
+						action="?/data"
+						class="flex w-full flex-col justify-evenly overflow-auto"
+					>
 						<input type="hidden" name="userid" value={userData.id} />
 						<div class="flex w-full flex-col">
 							<div class="m-1">
@@ -62,12 +70,12 @@
 
 							<div class="m-1">
 								<Label for="email">E-Mail</Label>
-								<Input type="email" id="email" name="email" value={userData.email} />
+								<Input type="email" id="email" name="email" value={userData.email} {disabled} />
 							</div>
 
 							<div class="m-1">
 								<Label for="role">Rol</Label>
-								<Select.Root selected={{ value: userData.role }}>
+								<Select.Root selected={{ value: userData.role }} {disabled}>
 									<Select.Trigger class="w-full">
 										<Select.Value placeholder={userData.role} />
 									</Select.Trigger>
@@ -83,7 +91,7 @@
 
 							<div class="m-1">
 								<Label for="department">Departamento</Label>
-								<Select.Root selected={{ value: userData.department }}>
+								<Select.Root selected={{ value: userData.department }} {disabled}>
 									<Select.Trigger class="w-full">
 										<Select.Value placeholder={userData.department} />
 									</Select.Trigger>
@@ -98,7 +106,13 @@
 
 							<div class="m-1">
 								<Label for="location">Ubicación</Label>
-								<Input type="text" id="location" name="location" value={userData.location} />
+								<Input
+									type="text"
+									id="location"
+									name="location"
+									value={userData.location}
+									{disabled}
+								/>
 							</div>
 						</div>
 
