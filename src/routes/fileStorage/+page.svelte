@@ -77,8 +77,8 @@
 					<ContextMenu.Root>
 						<div class="sm:w-1/2 md:w-1/2 lg:w-1/6">
 							<ContextMenu.Trigger>
-								<a href={file.url} class="flex flex-col items-center justify-center py-5 lg:px-5">
-									<img src={getIconUrl(file.mime)} alt="file" class="w-[64px]" />
+								<a href={file.url} class="flex flex-col text-center items-center justify-center py-5 lg:px-5">
+									<img src={getIconUrl(file.mime)} alt="file" class="w-[64px] " />
 									{file.name}
 								</a></ContextMenu.Trigger
 							>

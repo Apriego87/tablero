@@ -32,7 +32,7 @@
 	let userData: User
 	let openDialog = false
 
-	const usersFormatted = data.users.map(({ password, ...user }) => user);
+	const usersFormatted = data.users.map(({ password, ...user }) => user)
 
 	const searchUsers = usersFormatted.map((user) => ({
 		...user,
@@ -88,7 +88,7 @@
 
 <div id="cont" class="flex h-[88vh] w-full flex-col items-center justify-evenly">
 	<Dialog.Root open={openDialog} onOutsideClick={(openDialog = false)}>
-		<Dialog.Content class="flex w-full sm:w-3/4 lg:w-1/2 flex-col items-center justify-center">
+		<Dialog.Content class="flex w-full flex-col items-center justify-center sm:w-3/4 lg:w-1/2">
 			<form method="POST" action="?/update" class="w-full">
 				<input type="hidden" name="userid" value={userData.id} />
 				<div class="flex flex-col md:flex-row">
@@ -159,7 +159,7 @@
 			</form>
 		</Dialog.Content>
 	</Dialog.Root>
-	<Card.Root class="w-full sm:w-3/4 lg:w-1/2 max-w-[90vw]">
+	<Card.Root class="w-full max-w-[90vw] sm:w-3/4 lg:w-1/2">
 		<Card.Header>
 			<Card.Title>Buscador de Empleados</Card.Title>
 			<Card.Description>Puedes buscar por nombre, e-mail, ubicación o rol.</Card.Description>

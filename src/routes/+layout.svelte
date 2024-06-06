@@ -25,12 +25,12 @@
 		<h1 class="max-w-full text-2xl font-bold text-white md:max-w-[30vw]">
 			{$page.data.title}
 		</h1>
-		<div class="lg:flex">
+		<div class="lg:flex lg:mr-5">
 			{#if data.logged}
 				<Sheet.Root bind:open>
 					<Sheet.Trigger>
 						<button class="text-white focus:outline-none" aria-label="abrir menú">
-							<HamburgerMenu class="h-5" />
+							<HamburgerMenu class="size-6" />
 						</button>
 					</Sheet.Trigger>
 					<Sheet.Content>
