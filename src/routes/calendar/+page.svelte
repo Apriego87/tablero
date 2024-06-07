@@ -119,10 +119,10 @@
 			</Button>
 		</Dialog.Trigger>
 	</div>
-	<Dialog.Content class="flex flex-col items-center justify-center">
-		<Dialog.Header>
+	<Dialog.Content class="flex w-[90vw] flex-col items-center justify-center">
+		<Dialog.Header class="w-full">
 			<Dialog.Title class="text-center">Introduce los datos del evento:</Dialog.Title>
-			<Dialog.Description>
+			<Dialog.Description class="w-full">
 				<form action="?/create" method="post" class="mt-2 flex w-full flex-col">
 					<div class="my-3 flex flex-col gap-2">
 						<Label for="title">Título</Label>
@@ -148,7 +148,7 @@
 						</Select.Root>
 					</div>
 
-					<div class="my-3 flex flex-row justify-center gap-2">
+					<div class="my-3 w-full flex flex-col lg:flex-row lg:justify-evenly gap-2">
 						<div class="my-3">
 							<Label for="start">Inicio</Label>
 							<Input
