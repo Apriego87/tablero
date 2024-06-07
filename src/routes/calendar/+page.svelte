@@ -176,7 +176,7 @@
 					</div>
 
 					<div class="mt-2 w-full text-center">
-						<Button type="submit">Enviar</Button>
+						<Button class="w-full" type="submit">Enviar</Button>
 					</div>
 				</form>
 			</Dialog.Description>
