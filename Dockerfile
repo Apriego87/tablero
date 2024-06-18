@@ -2,7 +2,7 @@ FROM node:20
 
 WORKDIR /app
 
-ENV ORIGIN=http://tablero.apriego.dawmor.cloud
+ENV ORIGIN=https://tablero.apriego.dawmor.cloud
 
 COPY package.json package-lock.json ./
 

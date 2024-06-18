@@ -8,7 +8,6 @@
 	import { Label } from '$lib/components/ui/label'
 	import { Textarea } from '$lib/components/ui/textarea'
 	import * as Dialog from '$lib/components/ui/dialog'
-	import * as ContextMenu from '$lib/components/ui/context-menu'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js'
 	import * as Select from '$lib/components/ui/select'
 	import { Plus } from 'svelte-radix'
@@ -94,9 +93,26 @@
 <AlertDialog.Root open={openDialog} onOutsideClick={(openDialog = false)}>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title>{currentEvent.title}</AlertDialog.Title>
-			<AlertDialog.Description>
-				{currentEvent.extendedProps.description}
+			<AlertDialog.Title
+				><div>
+					<h1 class="mb-4 text-2xl font-bold">{currentEvent.title}</h1>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">
+						{new Date(currentEvent.start).toLocaleString('es-ES')} - {new Date(
+							currentEvent.end
+						).toLocaleString('es-ES')}
+					</h2>
+				</div>
+			</AlertDialog.Title>
+			<AlertDialog.Description class="grid gap-4">
+				<div>
+					<p>Descripción:</p>
+					{currentEvent.extendedProps.description}
+				</div>
+				<div>
+					<p>Departamento de {currentEvent.extendedProps.department}</p>
+				</div>
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
@@ -119,7 +135,7 @@
 			</Button>
 		</Dialog.Trigger>
 	</div>
-	<Dialog.Content class="flex w-[90vw] flex-col items-center justify-center">
+	<Dialog.Content class="flex w-[90vw] flex-col items-center justify-center lg:w-1/3">
 		<Dialog.Header class="w-full">
 			<Dialog.Title class="text-center">Introduce los datos del evento:</Dialog.Title>
 			<Dialog.Description class="w-full">
@@ -148,7 +164,7 @@
 						</Select.Root>
 					</div>
 
-					<div class="my-3 w-full flex flex-col lg:flex-row lg:justify-evenly gap-2">
+					<div class="my-3 flex w-full flex-col gap-2 lg:flex-row lg:justify-evenly">
 						<div class="my-3">
 							<Label for="start">Inicio</Label>
 							<Input

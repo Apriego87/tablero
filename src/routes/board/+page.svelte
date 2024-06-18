@@ -21,7 +21,7 @@
 	<div class="h-full w-full p-5">
 		<h1 class="my-5 text-center text-3xl font-bold">Anuncios actuales</h1>
 		<div
-			class="flex h-[90%] flex-col items-center overflow-auto lg:flex-row lg:items-start lg:justify-evenly lg:flex-wrap"
+			class="flex h-[90%] flex-col items-center overflow-auto md:flex-row md:flex-wrap md:items-start md:justify-between lg:flex-row lg:flex-wrap lg:items-start lg:justify-evenly"
 		>
 			{#if data.notes.length === 0}
 				<div class="mt-5 w-full text-center">

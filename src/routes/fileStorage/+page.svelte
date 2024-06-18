@@ -64,7 +64,7 @@
 	<div class="h-full w-full p-5">
 		<h1 class="h-[10%] text-center text-3xl font-bold">Tus archivos:</h1>
 
-		<div class="flex h-[90%] flex-col items-center lg:items-start overflow-auto lg:flex-row lg:justify-start">
+		<div class="flex h-[90%] flex-col items-center md:items-start lg:items-start overflow-auto md:flex-row lg:flex-row lg:justify-start">
 			{#if data.files.length === 0}
 				<div class="mt-5 w-full text-center">
 					<p><i>No tienes archivos que mostrar...</i></p>
@@ -75,7 +75,7 @@
 						<input type="hidden" name="fileID" value={file.id} />
 					</form>
 					<ContextMenu.Root>
-						<div class="w-full lg:w-1/6">
+						<div class="w-full md:w-1/4 lg:w-1/6">
 							<ContextMenu.Trigger>
 								<a
 									href={file.url}

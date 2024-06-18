@@ -64,7 +64,7 @@ export const load = (async ({ cookies }) => {
     }
     const form = await superValidate(zod(schema));
 
-    return { form, title: 'Registo de Usuarios' };
+    return { form, title: 'Registro de Usuarios' };
 });
 
 export const actions: Actions = {
