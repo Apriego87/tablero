@@ -18,7 +18,7 @@
 
 <main class="flex h-[88vh] flex-col items-center justify-center">
 	<div class="flex h-[85%] w-[90%] lg:w-[65%] flex-row items-center gap-10">
-		<Card.Root class="flex w-full h-full md:h-fit lg:h-fit flex-col items-center bg-red-500">
+		<Card.Root class="flex w-full h-full md:h-fit lg:h-fit flex-col items-center">
 			<Card.Header>
 				<Card.Title>
 					<p class="text-2xl font-bold">Registrar Usuario</p>
